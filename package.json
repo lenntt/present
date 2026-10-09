@@ -1,0 +1,16 @@
+{
+  "name": "present",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "present dev",
+    "build": "present build",
+    "check": "present check"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}

@@ -1,0 +1,118 @@
+.timeline.tl {
+  --line-y: 300px;
+  position: relative;
+  height: 100%;
+  min-height: 640px;
+}
+
+.tl-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--line-y);
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 3px;
+  background: var(--brand);
+  transform-origin: left center;
+}
+
+.tl-tick {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: var(--line-y);
+}
+
+.tl-dot {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 6px solid var(--brand);
+  box-sizing: border-box;
+}
+
+.tl-year {
+  position: absolute;
+  bottom: 26px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.tl-items {
+  position: absolute;
+  inset: 0;
+  margin: 0 !important;
+}
+
+.reveal .tl-item {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--line-y);
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.tl-span {
+  position: absolute;
+  top: -4px;
+  left: calc(var(--x0) * 100%);
+  width: calc((var(--x1) - var(--x0)) * 100%);
+  height: 8px;
+  border-radius: 4px;
+  background: var(--accent);
+  box-shadow: 0 0 18px var(--accent-glow);
+  opacity: 0.85;
+}
+
+.tl-logo {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  bottom: 84px;
+  transform: translateX(-50%);
+}
+
+.tl-logo figure.media.inline {
+  display: block;
+}
+
+.tl-logo img {
+  display: block;
+  max-width: 104px;
+  max-height: 64px;
+  padding: 6px;
+  background: #fff;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.tl-label {
+  position: absolute;
+  top: 34px;
+  left: calc(var(--x) * 100% - 8px);
+  transform: rotate(36deg);
+  transform-origin: left top;
+  white-space: nowrap;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.tl-period .tl-label {
+  color: var(--text);
+}
+
+.tl-point .tl-label {
+  color: var(--muted);
+}
+
+.tl-label strong {
+  color: var(--brand);
+}

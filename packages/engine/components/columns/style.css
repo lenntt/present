@@ -1,0 +1,16 @@
+.columns.component {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  gap: 56px;
+  margin-bottom: 0.6em;
+}
+
+.columns.component > .col {
+  padding-top: 20px;
+  border-top: 4px solid var(--brand);
+}
+
+.columns.component > .col > p:first-child strong {
+  font-family: var(--font-mono);
+  color: var(--brand);
+}

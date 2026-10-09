@@ -1,0 +1,17 @@
+.keycap {
+  display: inline-block;
+  min-width: 1.15em;
+  margin-right: 0.12em;
+  padding: 0 0.12em;
+  text-align: center;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  border: 3px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  box-shadow: 0 0 22px var(--accent-glow), inset 0 -5px 0 var(--accent-soft);
+}
+
+.keycap-rest {
+  display: inline-block;
+}
