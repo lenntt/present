@@ -1,0 +1,21 @@
+.git-worktree {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.git-worktree svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.gw-line { fill: none; stroke-width: 8; stroke-linecap: round; }
+.gw-line.gw-main { stroke: var(--brand-fill); }
+.gw-line.gw-a { stroke: var(--accent); }
+.gw-line.gw-b { stroke: #8597ab; }
+.gw-dot { stroke: var(--bg); stroke-width: 4; }
+.gw-dot.gw-main { fill: var(--brand-fill); }
+.gw-dot.gw-a { fill: var(--accent); }
+.gw-dot.gw-b { fill: #8597ab; }
+.gw-label { font: 22px var(--font-mono); fill: var(--muted); }

@@ -1,0 +1,55 @@
+.story-slices {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  font: 22px/1 var(--font-mono);
+  color: var(--muted);
+}
+
+.story-slices .ss-layers {
+  display: grid;
+  grid-template-rows: repeat(3, 52px);
+  gap: 6px;
+  width: 90px;
+  text-align: right;
+}
+.story-slices .ss-layers span { align-self: center; }
+
+.story-slices .ss-block {
+  position: relative;
+  height: 168px;
+}
+
+.story-slices .ss-slice {
+  position: absolute;
+  top: 0;
+  display: grid;
+  grid-template-rows: repeat(3, 52px);
+  gap: 6px;
+}
+.story-slices .ss-slice i { background: var(--line); }
+.story-slices .ss-slice i:nth-child(1) { border-radius: 6px 6px 0 0; }
+.story-slices .ss-slice i:nth-child(3) { border-radius: 0 0 6px 6px; }
+
+.story-slices .ss-cut {
+  position: absolute;
+  top: -14px;
+  bottom: -14px;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--danger);
+  transform-origin: top center;
+}
+
+.story-slices .ss-tag {
+  position: absolute;
+  left: 0;
+  top: -62px;
+  text-align: center;
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
