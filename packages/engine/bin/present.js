@@ -3,6 +3,7 @@
 //   --public           — preview exactly what gets exported (private slides left out)
 // present build [deck] — static, offline-capable site in dist/<deck>/ (never includes private slides)
 // present check [deck] — effect harness: step through every slide, report errors and leaks
+// present site       — build every deck into dist/<deck>/ plus an index page at dist/index.html
 // present outline [deck] — JSON for tooling (/deck-spice): slides, fx status, presets, components
 //   --mark             — record the current slides as spiced (in fx.yaml's sibling .fx-state.json)
 //   --mark=id,id       — record only these slides
@@ -20,20 +21,28 @@ const args = process.argv.slice(2)
 const flags = new Set(args.filter((a) => a.startsWith('--')).map((a) => a.split('=')[0]))
 const flagValue = (name) => args.find((a) => a.startsWith(`${name}=`))?.slice(name.length + 1)
 const [cmd = 'dev', deckArg] = args.filter((a) => !a.startsWith('--'))
-const includePrivate = cmd !== 'build' && !flags.has('--public')
-const deckDir = findDeck(deckArg)
-const name = path.basename(deckDir)
+const includePrivate = !['build', 'site'].includes(cmd) && !flags.has('--public')
 
-const config = {
+const configFor = (deckDir) => ({
   configFile: false,
   root: ENGINE_DIR,
   base: './',
   publicDir: false,
   plugins: [deckPlugin(deckDir, { includePrivate })],
   server: { fs: { allow: [REPO_DIR] }, open: true },
-  build: { outDir: path.join(REPO_DIR, 'dist', name), emptyOutDir: true, assetsInlineLimit: 0 },
+  build: { outDir: path.join(REPO_DIR, 'dist', path.basename(deckDir)), emptyOutDir: true, assetsInlineLimit: 0 },
   logLevel: 'info',
+})
+
+if (cmd === 'site') {
+  const { buildSite } = await import('../src/site.js')
+  await buildSite(listDecks().map((d) => path.join(DECKS_DIR, d)), { outDir: path.join(REPO_DIR, 'dist'), configFor })
+  process.exit(0)
 }
+
+const deckDir = findDeck(deckArg)
+const name = path.basename(deckDir)
+const config = configFor(deckDir)
 
 if (cmd === 'dev') {
   const server = await createServer(config)
@@ -56,7 +65,7 @@ if (cmd === 'dev') {
   const { outline } = await import('../src/outline.js')
   console.log(JSON.stringify(await outline(deckDir, { mark: flags.has('--mark') && (flagValue('--mark')?.split(',') ?? true) }), null, 2))
 } else {
-  console.error(`unknown command "${cmd}" — use dev, build, check or outline`)
+  console.error(`unknown command "${cmd}" — use dev, build, site, check or outline`)
   process.exit(1)
 }
 
@@ -67,9 +76,13 @@ function findDeck(arg) {
     if (!found) fail(`no content.md in ${candidates.join(' or ')}`)
     return found
   }
-  const decks = fs.existsSync(DECKS_DIR) ? fs.readdirSync(DECKS_DIR).filter((d) => fs.existsSync(path.join(DECKS_DIR, d, 'content.md'))) : []
+  const decks = listDecks()
   if (decks.length === 1) return path.join(DECKS_DIR, decks[0])
   fail(`which deck? ${decks.join(', ') || '(none in decks/)'}`)
+}
+
+function listDecks() {
+  return fs.existsSync(DECKS_DIR) ? fs.readdirSync(DECKS_DIR).filter((d) => fs.existsSync(path.join(DECKS_DIR, d, 'content.md'))) : []
 }
 
 function fail(msg) {

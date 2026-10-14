@@ -9,7 +9,12 @@ npm run dev -- zambia      # live-reloading presentation (decks/zambia)
 npm run build -- zambia    # static site in dist/zambia/
 npm run check -- zambia    # step through every slide; report errors, orphaned fx, overflow, leaks
 npm run dev -- zambia --public   # preview exactly what gets exported (private slides left out)
+npx present site           # every deck → dist/<deck>/ + an index page (what GitHub Pages serves)
 ```
+
+Every push to `main` publishes all decks to GitHub Pages (`.github/workflows/pages.yml`), at
+`https://<user>.github.io/<repo>/<deck>/`. Private slides are always left out; put `publish: false` in a
+deck's frontmatter to keep the whole deck off the site.
 
 With Claude Code, in this repo:
 
