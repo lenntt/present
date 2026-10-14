@@ -1,0 +1,52 @@
+/* `::: countdown` — remaining session time, big and monospaced. */
+.countdown.component {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 48px;
+  font-family: var(--font-mono);
+}
+
+.countdown .cd-time {
+  font-size: 180px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.countdown .cd-label p {
+  margin: 0;
+  font-size: 30px;
+  color: var(--muted);
+}
+
+/* On the purple section/cover backgrounds */
+.layout-section .countdown .cd-time,
+.layout-cover .countdown .cd-time {
+  color: #8ff0b8;
+  text-shadow: 0 0 32px rgba(61, 220, 132, 0.35);
+}
+
+.layout-section .countdown .cd-label p,
+.layout-cover .countdown .cd-label p {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.countdown.is-soon .cd-time {
+  animation: cd-pulse 2s ease-in-out infinite;
+}
+
+.countdown.is-over .cd-time {
+  opacity: 0.45;
+  animation: none;
+}
+
+@keyframes cd-pulse {
+  50% { opacity: 0.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown.is-soon .cd-time { animation: none; }
+}

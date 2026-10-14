@@ -153,14 +153,35 @@ slides:
           lines: [read the deck, pick the slides, direct each slide, write fx.yaml, run present check → ok]
 
   final:
-    intent: '"you are accountable" lights up word by word, then "learn" and "turn off AI" — and Bit takes the hint, shrinking back into its flask and corking itself.'
-    emphasisParams: { delay: 1b, stagger: 1.5b }   # you 1b, accountable 2.5b, learn 4b, "turn off AI" 5.5b
+    intent: '"you are accountable" lights up; on the next click "learn" and "turn off AI" land and Bit takes the hint, corking itself in its flask; the last click leaves the human with the job — "make the world a better place".'
+    effects:
+      # one glow sequence per part, so each key word lands right after its own click
+      - target: .slide-body > ul:nth-of-type(1) mark
+        preset: neon-glow
+        params: { delay: 1b, stagger: 1b }        # you 1b, accountable 2b
+      - target: .slide-body > ul:nth-of-type(2) mark
+        preset: neon-glow
+        params: { delay: 0.5b, stagger: 1b }      # learn 0.5b, "turn off AI generation" 1.5b
+      - target: .slide-body > ul:nth-of-type(3) mark
+        preset: neon-glow
+        params: { delay: 0.5b }
+      - target: .slide-body > ul:nth-of-type(2)  # Bit stands there from the start; its motion plays with this part
+        preset: bit
+        params:
+          place: { right: 280px, bottom: 120px }
+          size: 400
+          mood: happy
+          enter: none
+          playAt: 2.5b                # right after "turn off AI generation" lands
+          play: [retreat]
+
+  questions:
+    intent: Q&A — Bit pops back out of its flask to wave the room in, then ponders along while the session clock counts down.
     effects:
       - preset: bit
         params:
-          place: { right: 280px, bottom: 120px }
-          size: 460
-          mood: happy
-          at: 0.5b
-          playAt: 6.5b                # right after "turn off AI generation" lands
-          play: [retreat]
+          place: { right: 240px, bottom: 110px }
+          size: 380
+          enter: emerge
+          at: 1b
+          play: [wave, think]

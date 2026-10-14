@@ -207,7 +207,7 @@ Custom skills is a `.md` file with instructions -> give the agents a sequence of
 
 . . .
 
-- Contribute to ==make the world a better place== for everyone
+- Contribute to ==make the world a better place== for everyone,
     AI might not do that for us
 
 
