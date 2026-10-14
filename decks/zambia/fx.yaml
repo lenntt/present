@@ -1,0 +1,166 @@
+# How the deck moves. Content lives in content.md; this file only adds motion.
+# Times are in beats (b) at `tempo`; ms/s also work.
+tempo: 120
+
+defaults:
+  transition: fade
+  emphasis: neon-glow
+  heading: scramble-heading
+
+slides:
+  cover:
+    intent: The talk boots up like a terminal session — kicker types, title decodes, speaker details settle in.
+    effects:
+      - target: .cover-kicker
+        custom: type-in
+      - target: .cover-meta p
+        custom: rise-in
+        params: { at: 3b, stagger: 0.5b, y: 24 }
+
+  slide-1:
+    intent: Hard cut into the music video — no transition between "us" and "it".
+    transition: none
+
+  software-engineers-using-ai-sept-2025:
+    intent: Two charts, one at a time, so the room reads the first before the second lands.
+    effects:
+      - target: figure.media
+        custom: rise-in
+        params: { stagger: 2b }
+
+  venlo:
+    intent: A live map, starting far away with Venlo pinned — I zoom in by hand, from Zambia to my campus.
+    heading: none
+    effects:
+      - target: figure.media
+        custom: rise-in
+        params: { at: 0.5b }
+
+  tell-me-something-about-you:
+    intent: Phones out — the QR gets scanned on screen, then Bit pops out of its flask to say hello.
+    heading: none
+    effects:
+      - target: figure.media
+        custom: qr-scan
+      - preset: bit
+        params:
+          place: { left: 300px, bottom: 110px }
+          enter: emerge
+          at: 4.5b
+          play: [wave]
+
+  career:
+    intent: Let the line draw my career left to right; Fontys is the destination.
+    components:
+      timeline:
+        duration: 8b
+    effects:
+      - target: .component.more
+        custom: rise-in
+        params: { at: 9b, y: 16 }   # the LinkedIn pointer arrives quietly once Fontys has landed
+
+  ai-in-software-development:
+    intent: The line runs from Copilot into the unknown (2027+); then the real question types itself out.
+    components:
+      timeline:
+        duration: 6b
+    effects:
+      - target: .slide-body > p
+        custom: type-in
+        params: { by: words, at: 7b, speed: 4 }
+    emphasisParams: { delay: 10b }   # "sacrificing quality" lights up once the question has typed out
+
+  vibe-coding:
+    intent: FAAFO lands as keycaps and Bit pops out at the "vibe coding" end of a slider; "Accountability → you" slams down, and on the next click Bit glides over to "stay in control" and folds its arms.
+    effects:
+      - target: ul strong
+        preset: keycap-stamp
+      - target: .slide-body > p:last-of-type > strong
+        custom: rubber-stamp
+        params: { onEntrance: true, at: 1.5b }   # slams down as its line appears
+      - custom: control-slider        # author hint: Bit operating a slider from vibe coding to staying in control
+        params: { at: 6b, from: vibe coding, to: stay in control }
+
+  amplifier:
+    intent: Zoom in — AI magnifies whatever is already there, good or bad; the two charts land one after the other.
+    transition: zoom
+    effects:
+      - target: figure.media
+        custom: rise-in
+        params: { stagger: 2b }
+
+  tooling:
+    intent: Don't vs Instead — as the slide lands, the webchat gets struck out and the real tools get the check; the terminal rises in as proof.
+    effects:
+      - target: .slide-body ul
+        custom: dont-instead
+      - target: figure.media
+        custom: rise-in
+        params: { at: 1b }
+
+  plan:
+    intent: '"Make no mistakes" gets struck out; instead the AI asks first — Bit pops a question bubble.'
+    effects:
+      - target: .slide-body ul
+        custom: dont-instead
+      - preset: bit
+        params:
+          mood: neutral
+          at: 1b
+          playAt: 3b
+          play: [{ motion: ask, args: { keep: true } }]
+
+  context:
+    intent: Context rot — the endless session gets struck out while Bit's meter fills until it's dizzy; the click restarts Bit fresh.
+    effects:
+      - target: .slide-body ul
+        custom: dont-instead
+      - preset: bit
+        params:
+          mood: happy
+          at: 1b
+          playAt: 2b
+          play: [overload]
+          click: [restart]
+
+  small:
+    intent: The big build gets struck out; one big block is sliced into thin vertical stories, and the first slice lights up — small enough to validate.
+    effects:
+      - target: .slide-body ul
+        custom: dont-instead
+      - custom: story-slices
+        params: { at: 3.5b }
+
+  parallel:
+    intent: Parallel agents — Bit splits into copies; on the click a git graph gives each agent its own worktree lane.
+    effects:
+      - preset: bit
+        params:
+          at: 1b
+          play: [multiply]
+      - custom: git-worktree
+
+  custom-skills:
+    intent: The command types itself like a wish; then the skill behind it writes itself out as a short .md recipe, each step ticked off.
+    effects:
+      - target: .slide-body li code
+        custom: type-in
+        params: { at: 1b }
+      - custom: skill-file
+        params:
+          at: 5b
+          title: deck-spice/SKILL.md
+          lines: [read the deck, pick the slides, direct each slide, write fx.yaml, run present check → ok]
+
+  final:
+    intent: '"you are accountable" lights up word by word, then "learn" and "turn off AI" — and Bit takes the hint, shrinking back into its flask and corking itself.'
+    emphasisParams: { delay: 1b, stagger: 1.5b }   # you 1b, accountable 2.5b, learn 4b, "turn off AI" 5.5b
+    effects:
+      - preset: bit
+        params:
+          place: { right: 280px, bottom: 120px }
+          size: 460
+          mood: happy
+          at: 0.5b
+          playAt: 6.5b                # right after "turn off AI generation" lands
+          play: [retreat]

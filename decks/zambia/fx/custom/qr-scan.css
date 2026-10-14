@@ -1,0 +1,26 @@
+.qr-scan {
+  position: absolute;
+  pointer-events: none;
+}
+
+.qr-scan .qs-corner {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border: 0 solid var(--accent);
+}
+.qr-scan .tl { left: 12px; top: 12px; border-width: 6px 0 0 6px; border-top-left-radius: 10px; }
+.qr-scan .tr { right: 12px; top: 12px; border-width: 6px 6px 0 0; border-top-right-radius: 10px; }
+.qr-scan .bl { left: 12px; bottom: 12px; border-width: 0 0 6px 6px; border-bottom-left-radius: 10px; }
+.qr-scan .br { right: 12px; bottom: 12px; border-width: 0 6px 6px 0; border-bottom-right-radius: 10px; }
+
+.qr-scan .qs-line {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 18px 4px var(--accent-glow), 0 -40px 40px -20px var(--accent-soft);
+}

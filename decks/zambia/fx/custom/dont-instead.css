@@ -1,0 +1,20 @@
+.di-strike {
+  position: absolute;
+  left: 1.2em;
+  top: 0.68em;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--danger);
+  transform-origin: left center;
+}
+
+.di-check {
+  display: inline-block;
+  margin-left: 0.4em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.reveal li:has(.di-check) {
+  border-radius: 8px;
+}

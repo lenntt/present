@@ -1,0 +1,20 @@
+.type-unit {
+  position: relative;
+  white-space: pre-wrap;
+}
+
+.type-unit[data-caret='1']::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 0.05em;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 0.06em;
+  background: var(--accent);
+  animation: type-blink 1s steps(1) infinite;
+}
+
+@keyframes type-blink {
+  50% { opacity: 0; }
+}
