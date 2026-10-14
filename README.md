@@ -49,6 +49,7 @@ subtitle: Guest Lecture · Oct 2026
 author: Lennart Tange
 affiliation: [Fontys University of Applied Sciences]
 mode: dark                             # or light
+ends: 16:30 Africa/Lusaka              # session end (IANA time zone optional) — for ::: countdown
 ---
 
 # Part 1                               ← section divider
@@ -79,6 +80,9 @@ Left column
 Right column
 :::
 
+::: countdown                          ← big clock counting down to `ends:` (or {until="16:30 Europe/Amsterdam"})
+:::                                       content, if any, is the label; default "until 16:30"
+
 ::: notes
 Only in the speaker view.
 :::
@@ -93,6 +97,8 @@ Extra explanation, only in the reading view.
 
 A `{.private}` slide is shown in `npm run dev` (marked "private — not exported" in the footer) and left out of every build:
 its text, notes, `fx.yaml` entry and any media only it uses don't end up in `dist/`. The build only ships media that the exported slides reference.
+
+A component folder may hold a `client.js` that runs once per instance in the browser, independent of fx (the countdown's clock).
 
 An unknown `::: name` block renders as plain Markdown in `<div class="name">`, with a build warning.
 

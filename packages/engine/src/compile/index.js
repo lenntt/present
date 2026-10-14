@@ -73,7 +73,7 @@ export async function compileDeck(deckDir, { includePrivate = true } = {}) {
 
   const sections = []
   if (meta.title) sections.push(coverSection(meta))
-  for (const slide of shown) sections.push(renderSlide(slide, components, warn))
+  for (const slide of shown) sections.push(renderSlide(slide, components, warn, meta))
 
   // Local media actually used by the rendered slides — the build ships only these.
   const media = new Set()
@@ -167,8 +167,15 @@ function prepareDirectives(tree, components, warn) {
       data.hProperties = { className: ['aside', ...extra] }
     } else {
       if (!components[node.name]) warn(`unknown component "${node.name}" — rendered as plain markdown in <div class="${node.name}">`)
+      // Other attributes (`::: countdown {until="16:30"}`) reach the component as data-* properties.
+      const rest = Object.entries(attrs).filter(([k]) => k !== 'class' && k !== 'id')
       data.hName = 'div'
-      data.hProperties = { className: [node.name, 'component', ...extra], dataComponent: node.name, ...(attrs.id ? { id: attrs.id } : {}) }
+      data.hProperties = {
+        className: [node.name, 'component', ...extra],
+        dataComponent: node.name,
+        ...(attrs.id ? { id: attrs.id } : {}),
+        ...Object.fromEntries(rest.map(([k, v]) => [`data${k[0].toUpperCase()}${k.slice(1)}`, v])),
+      }
     }
   })
 }
@@ -205,7 +212,7 @@ function coverSection(meta) {
   ])
 }
 
-function renderSlide(slide, components, warn) {
+function renderSlide(slide, components, warn, meta) {
   // Split the body into pause segments; segment n > 0 becomes fragment n - 1.
   const segments = [[]]
   for (const node of slide.body) {
@@ -217,7 +224,7 @@ function renderSlide(slide, components, warn) {
   const main = []
   const media = []
   const backgrounds = []
-  const ctx = { warn, slideId: slide.id }
+  const ctx = { warn, slideId: slide.id, meta }
 
   segments.forEach((nodes, seg) => {
     for (const node of nodes) {

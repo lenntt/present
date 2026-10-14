@@ -18,6 +18,8 @@ const modules = {
   components: byName(import.meta.glob('../../components/*/animate.js', { eager: true }), /components\/([^/]+)\/animate\.js$/),
   custom: deck.custom,
 }
+// A component's client.js runs once per instance, independent of fx (e.g. the countdown's clock).
+const clients = byName(import.meta.glob('../../components/*/client.js', { eager: true }), /components\/([^/]+)\/client\.js$/)
 
 const params = new URLSearchParams(location.search)
 const reading = params.get('view') === 'read'
@@ -30,6 +32,7 @@ for (const w of deck.warnings) console.warn(`[deck] ${w}`)
 const slides = document.querySelector('.reveal .slides')
 slides.innerHTML = deck.html
 addChrome(slides, deck.meta)
+for (const el of slides.querySelectorAll('[data-component]')) clients[el.dataset.component]?.default(el, { meta: deck.meta })
 if (navigator.onLine) embedOnline(slides)
 
 const fx = createFx({ Reveal, fx: deck.fx, meta: deck.meta, modules, still: reading || printing })
