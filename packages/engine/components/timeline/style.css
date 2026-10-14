@@ -116,3 +116,28 @@
 .tl-label strong {
   color: var(--brand);
 }
+
+/* `**2026+**`: a hollow, accent dot; if it's the last year the line runs on into an arrow */
+.tl-onward .tl-dot {
+  border-color: var(--accent);
+  border-style: dashed;
+}
+
+.tl-onward .tl-year {
+  color: var(--accent);
+}
+
+.tl-ahead .tl-line {
+  background: linear-gradient(90deg, var(--brand) 82%, var(--accent));
+}
+
+.tl-ahead .tl-line::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  border: 14px solid transparent;
+  border-left: 22px solid var(--accent);
+  border-right: 0;
+  transform: translate(100%, -50%);
+}

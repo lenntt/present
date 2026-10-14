@@ -7,7 +7,8 @@ const VIRTUAL = 'virtual:deck'
 const RESOLVED = '\0' + VIRTUAL
 const MEDIA_DIRS = ['img', 'media']
 
-export function deckPlugin(deckDir) {
+// includePrivate: false strips `{.private}` slides and ships only media the remaining slides use.
+export function deckPlugin(deckDir, { includePrivate = true } = {}) {
   let last = { meta: {} }
   const watched = (file) =>
     (file.startsWith(deckDir) && /\.(md|ya?ml|js)$/.test(file)) ||
@@ -22,7 +23,7 @@ export function deckPlugin(deckDir) {
 
     async load(id) {
       if (id !== RESOLVED) return
-      last = await compileDeck(deckDir)
+      last = await compileDeck(deckDir, { includePrivate })
       for (const w of last.warnings) this.warn(w)
       const custom = customEffects(deckDir, last.fx)
       const imports = custom.map(({ file }, i) => `import * as custom${i} from ${JSON.stringify(file)}`)
@@ -40,7 +41,7 @@ export function deckPlugin(deckDir) {
     },
 
     async transformIndexHtml(html) {
-      last = await compileDeck(deckDir)
+      last = await compileDeck(deckDir, { includePrivate })
       const { title = path.basename(deckDir), lang = 'en', mode = 'light' } = last.meta
       return html
         .replace('<html>', `<html lang="${lang}" class="mode-${mode}">`)
@@ -70,13 +71,11 @@ export function deckPlugin(deckDir) {
     },
 
     generateBundle() {
-      for (const dir of MEDIA_DIRS) {
-        const abs = path.join(deckDir, dir)
-        if (!fs.existsSync(abs)) continue
-        for (const file of walk(abs)) {
-          this.emitFile({ type: 'asset', fileName: path.relative(deckDir, file), source: fs.readFileSync(file) })
-        }
+      // Only referenced media: unused or private-only files never leave the machine.
+      for (const file of last.media) {
+        this.emitFile({ type: 'asset', fileName: file, source: fs.readFileSync(path.join(deckDir, file)) })
       }
+      if (last.privateIds.length) this.info?.(`left out private slide(s): ${last.privateIds.join(', ')}`)
     },
   }
 }
@@ -91,12 +90,5 @@ function customEffects(deckDir, fx) {
     .filter(({ file }) => fs.existsSync(file))
 }
 
-function* walk(dir) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, entry.name)
-    if (entry.isDirectory()) yield* walk(p)
-    else yield p
-  }
-}
 
 const escape = (s) => String(s).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`)

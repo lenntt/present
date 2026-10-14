@@ -14,6 +14,7 @@ import { visit } from 'unist-util-visit'
 import { h } from 'hastscript'
 import GithubSlugger from 'github-slugger'
 import YAML from 'yaml'
+import { createHash } from 'node:crypto'
 import remarkAttributes from './attributes.js'
 import remarkMark from './mark.js'
 import { figureFor } from './media.js'
@@ -24,7 +25,9 @@ export const COMPONENTS_DIR = path.join(ENGINE_DIR, 'components')
 const BUILTIN_BLOCKS = new Set(['notes', 'aside'])
 const isPause = (node) => node.type === 'paragraph' && mdToString(node).trim() === '. . .'
 
-export async function compileDeck(deckDir) {
+// `{.private}` slides are shown when presenting locally and dropped (with their media,
+// notes and fx entries) from anything that leaves the machine: pass includePrivate: false.
+export async function compileDeck(deckDir, { includePrivate = true } = {}) {
   const warnings = []
   const warn = (msg) => warnings.push(msg)
 
@@ -52,19 +55,34 @@ export async function compileDeck(deckDir) {
     const title = slide.heading ? mdToString(slide.heading) : ''
     slide.id = attrs?.id ?? (title ? slugger.slug(title) : `slide-${i + 1}`)
     slide.classes = attrs?.classes ?? []
+    slide.title = title
+    // `<!-- fx: … -->` comments are ideas for /deck-spice; like all comments they never reach the output.
+    slide.hints = slide.body
+      .filter((n) => n.type === 'html')
+      .map((n) => n.value.match(/^<!--\s*fx:\s*([\s\S]*?)\s*-->$/)?.[1])
+      .filter(Boolean)
+    // Fingerprint of the slide's own Markdown, so /deck-spice can tell which slides changed.
+    const nodes = [slide.heading, ...slide.body].filter(Boolean)
+    const from = nodes[0]?.position?.start.offset ?? 0
+    const to = nodes.at(-1)?.position?.end.offset ?? from
+    slide.hash = createHash('sha1').update(src.slice(from, to).trim()).digest('hex').slice(0, 10)
     return slide
   })
+  const privateIds = new Set(slides.filter((s) => s.classes.includes('private')).map((s) => s.id))
+  const shown = includePrivate ? slides : slides.filter((s) => !privateIds.has(s.id))
 
   const sections = []
   if (meta.title) sections.push(coverSection(meta))
-  for (const slide of slides) sections.push(renderSlide(slide, components, warn))
+  for (const slide of shown) sections.push(renderSlide(slide, components, warn))
 
+  // Local media actually used by the rendered slides — the build ships only these.
+  const media = new Set()
   for (const section of sections) {
     visit(section, 'element', (el) => {
       const src = (el.tagName === 'img' || el.tagName === 'video') && el.properties.src
-      if (src && !/^(https?:|data:)/.test(src) && !fs.existsSync(path.join(deckDir, src))) {
-        warn(`missing media "${src}" on slide "${section.properties.dataSlide}"`)
-      }
+      if (!src || /^(https?:|data:)/.test(src)) return
+      if (fs.existsSync(path.join(deckDir, src))) media.add(path.normalize(src))
+      else warn(`missing media "${src}" on slide "${section.properties.dataSlide}"`)
     })
   }
 
@@ -72,16 +90,49 @@ export async function compileDeck(deckDir) {
   const ids = new Set(slides.map((s) => s.id).concat(meta.title ? ['cover'] : []))
   for (const id of Object.keys(fx.slides ?? {})) {
     if (!ids.has(id)) warn(`fx.yaml: slide "${id}" matches no slide in content.md`)
+    else if (!includePrivate && privateIds.has(id)) delete fx.slides[id]
   }
 
   return {
     meta,
     html: sections.map((s) => toHtml(s)).join('\n'),
+    slides: sections.map((section) => summarize(section, slides, meta)),
     fx,
-    slideIds: [...ids],
+    slideIds: shown.map((s) => s.id),
+    privateIds: [...privateIds],
+    media: [...media],
     warnings,
   }
 }
+
+// What a slide contains, for tooling (`present outline`) — not used for rendering.
+function summarize(section, slides, meta) {
+  const id = section.properties.dataSlide
+  const source = slides.find((s) => s.id === id)
+  const out = {
+    id,
+    title: source?.title ?? '(cover)',
+    layout: [].concat(section.properties.className).find((c) => c.startsWith('layout-')),
+    private: !!source?.classes.includes('private'),
+    steps: Number(section.properties.dataFragments ?? 0),
+    components: [],
+    emphasis: [],
+    media: [],
+    hasNotes: false,
+    hints: source?.hints ?? [],
+    hash: source?.hash ?? createHash('sha1').update(JSON.stringify(meta)).digest('hex').slice(0, 10),
+  }
+  visit(section, 'element', (el) => {
+    if (el.properties?.dataComponent) out.components.push(el.properties.dataComponent)
+    if (el.tagName === 'mark') out.emphasis.push(hastText(el))
+    if ((el.tagName === 'img' || el.tagName === 'video') && el.properties.src) out.media.push(el.properties.src)
+    if (el.tagName === 'a' && (el.properties.dataYoutube || el.properties.dataMap)) out.media.push(el.properties.href)
+    if (isClass(el, 'notes')) out.hasNotes = true
+  })
+  return out
+}
+
+const hastText = (node) => (node.type === 'text' ? node.value : (node.children ?? []).map(hastText).join(''))
 
 async function loadComponents() {
   const components = {}
@@ -173,6 +224,7 @@ function renderSlide(slide, components, warn) {
       for (let el of toElements(node)) {
         if (isClass(el, 'notes')) { notes.push(el); continue }
         el = transformMedia(el)
+        markTips(el)
         el = runComponents(el, components, ctx)
         if (seg > 0) {
           el.properties.className = [...(el.properties.className ?? []), 'fragment']
@@ -223,7 +275,7 @@ function inferLayout(slide, main, media) {
   if (explicit) return explicit
   const text = main.filter((el) => !isClass(el, 'aside'))
   if (!media.length) return 'layout-text'
-  if (!text.length) return 'layout-picture'
+  if (!text.length) return media.length === 1 && isClass(media[0], 'full') ? 'layout-full' : 'layout-picture'
   if (media.some((f) => isClass(f, 'left'))) return 'layout-split-left'
   if (media.some((f) => isClass(f, 'full'))) return 'layout-stack'
   return 'layout-split'
@@ -248,6 +300,22 @@ function transformMedia(el) {
     }
   })
   return el
+}
+
+// A paragraph or list item starting with "Tip:" becomes a tip: the label turns into a badge.
+const TIP = /^\s*tip:\s*/i
+function markTips(el) {
+  visit(el, 'element', (node) => {
+    if (node.tagName !== 'p' && node.tagName !== 'li') return
+    // Loose list items wrap their text in <p>; style the item, not the paragraph.
+    const host = node.tagName === 'li' && node.children.find((c) => c.type === 'element')?.tagName === 'p' ? node.children.find((c) => c.type === 'element') : node
+    const first = host.children[0]
+    if (first?.type !== 'text' || !TIP.test(first.value)) return
+    first.value = first.value.replace(TIP, '')
+    host.children.unshift(h('span.tip-label', 'Tip'))
+    node.properties.className = [...(node.properties.className ?? []), 'tip']
+    return 'skip'
+  })
 }
 
 function runComponents(el, components, ctx) {

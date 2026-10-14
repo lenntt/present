@@ -161,6 +161,10 @@ export function createFx({ Reveal, fx = {}, meta = {}, modules, still = false })
       Reveal.on('fragmenthidden', () => update(true))
     },
     plans,
+    // jump the current slide's running animations to where they end up (harness: measure the settled layout)
+    settle() {
+      for (const spec of plans.get(Reveal.getCurrentSlide()) ?? []) if (spec.ctrl) spec.ctrl.seek(spec.state)
+    },
     // live controllers, for the harness's leak check
     alive: () => [...plans.values()].flat().filter((s) => s.ctrl).length,
   }

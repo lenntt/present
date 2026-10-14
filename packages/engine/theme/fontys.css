@@ -25,7 +25,8 @@
 
   --pad-x: 120px;
   --pad-top: 88px;
-  --pad-bottom: 96px;
+  --footer: 100px; /* reserved band for logo, path and counter */
+  --pad-bottom: calc(var(--footer) + 28px);
   --fs-body: 40px;
 }
 
@@ -93,9 +94,10 @@ body {
 
 .chrome {
   position: absolute;
-  inset: auto var(--pad-x) 32px 40px;
+  inset: auto var(--pad-x) 0 40px;
+  height: var(--footer);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 24px;
   font-family: var(--font-mono);
   font-size: 18px;
@@ -104,8 +106,8 @@ body {
 }
 
 .chrome-logo {
-  width: 84px;
-  height: 84px;
+  width: 72px;
+  height: 72px;
   background: #fff url('./assets/fontys-logo.png') center / contain no-repeat;
   border-radius: 2px;
 }
@@ -117,6 +119,13 @@ body {
 .chrome-path b {
   color: var(--accent);
   font-weight: 400;
+}
+
+/* {.private} slides: visible locally, never exported */
+.slide.private .chrome-path::after {
+  content: '  ● private — not exported';
+  color: var(--danger);
+  white-space: pre;
 }
 
 .chrome-count {
@@ -251,6 +260,19 @@ figure.media video {
   filter: drop-shadow(var(--drop));
 }
 
+figure.media iframe.youtube {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  align-self: center;
+  border: 0;
+  border-radius: 10px;
+  filter: drop-shadow(var(--drop));
+}
+
 figure.media.inline {
   display: inline-flex;
   vertical-align: middle;
@@ -332,6 +354,19 @@ figure.bg .credit {
   width: 100%;
 }
 
+/* A live map fills its column; drag/zoom with the mouse, arrows still advance the deck. */
+figure.media:has(> iframe.map, > a.map) { flex: 1; }
+
+figure.media iframe.map {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 10px;
+  filter: drop-shadow(var(--drop));
+}
+
 /* ---------- layouts */
 
 .layout-split .slide-body,
@@ -383,6 +418,32 @@ figure.bg .credit {
 
 .layout-picture .slide-body > figure img {
   flex: 1;
+}
+
+/* A lone `.full` media fills the slide edge to edge, no chrome. */
+.layout-full .frame {
+  padding: 0;
+}
+
+.layout-full .chrome {
+  display: none;
+}
+
+.layout-full .slide-body,
+.layout-full .slide-body > figure {
+  flex: 1;
+  display: flex;
+}
+
+.layout-full .slide-body > figure img,
+.layout-full .slide-body > figure video,
+.layout-full .slide-body > figure iframe.youtube {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  border-radius: 0;
+  filter: none;
 }
 
 .layout-stack .slide-body {
@@ -475,6 +536,55 @@ figure.bg .credit {
   font-weight: 700;
   font-size: 40px;
   color: #fff;
+}
+
+/* ---------- tips: a paragraph or bullet starting with "Tip:" */
+
+.reveal .tip {
+  position: relative;
+  padding: 0.35em 0.6em 0.35em 0.6em;
+  border-left: 5px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--accent-soft);
+  width: fit-content;
+  max-width: 30em;
+}
+
+.reveal .tip > p:last-child {
+  margin-bottom: 0;
+}
+
+.reveal li.tip {
+  padding-left: 0.6em;
+  margin: 0.4em 0;
+}
+
+.reveal li.tip::before {
+  display: none; /* the badge replaces the bullet */
+}
+
+.tip-label {
+  display: inline-block;
+  margin-right: 0.5em;
+  padding: 0.1em 0.45em;
+  border-radius: 6px;
+  background: var(--brand-fill);
+  color: var(--on-brand);
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: 0.25em;
+}
+
+.tip-label::before {
+  content: '$ ';
+  color: var(--accent);
+}
+
+.mode-dark .tip-label::before {
+  color: #8ff0b8;
 }
 
 /* ---------- notes & asides */

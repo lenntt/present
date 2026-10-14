@@ -1,7 +1,11 @@
 #!/usr/bin/env node
-// present dev [deck]   — live-reloading local presentation
-// present build [deck] — static, offline-capable site in dist/<deck>/
+// present dev [deck]   — live-reloading local presentation (includes {.private} slides)
+//   --public           — preview exactly what gets exported (private slides left out)
+// present build [deck] — static, offline-capable site in dist/<deck>/ (never includes private slides)
 // present check [deck] — effect harness: step through every slide, report errors and leaks
+// present outline [deck] — JSON for tooling (/deck-spice): slides, fx status, presets, components
+//   --mark             — record the current slides as spiced (in fx.yaml's sibling .fx-state.json)
+//   --mark=id,id       — record only these slides
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -12,7 +16,11 @@ const ENGINE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.
 const REPO_DIR = path.resolve(ENGINE_DIR, '../..')
 const DECKS_DIR = path.join(REPO_DIR, 'decks')
 
-const [cmd = 'dev', deckArg] = process.argv.slice(2)
+const args = process.argv.slice(2)
+const flags = new Set(args.filter((a) => a.startsWith('--')).map((a) => a.split('=')[0]))
+const flagValue = (name) => args.find((a) => a.startsWith(`${name}=`))?.slice(name.length + 1)
+const [cmd = 'dev', deckArg] = args.filter((a) => !a.startsWith('--'))
+const includePrivate = cmd !== 'build' && !flags.has('--public')
 const deckDir = findDeck(deckArg)
 const name = path.basename(deckDir)
 
@@ -21,7 +29,7 @@ const config = {
   root: ENGINE_DIR,
   base: './',
   publicDir: false,
-  plugins: [deckPlugin(deckDir)],
+  plugins: [deckPlugin(deckDir, { includePrivate })],
   server: { fs: { allow: [REPO_DIR] }, open: true },
   build: { outDir: path.join(REPO_DIR, 'dist', name), emptyOutDir: true, assetsInlineLimit: 0 },
   logLevel: 'info',
@@ -44,8 +52,11 @@ if (cmd === 'dev') {
   for (const p of problems) console.log(`  ✗ ${p}`)
   console.log(problems.length ? `${problems.length} problem(s)` : `ok${warnings.length ? ` with ${warnings.length} warning(s)` : ''}`)
   process.exit(problems.length ? 1 : 0)
+} else if (cmd === 'outline') {
+  const { outline } = await import('../src/outline.js')
+  console.log(JSON.stringify(await outline(deckDir, { mark: flags.has('--mark') && (flagValue('--mark')?.split(',') ?? true) }), null, 2))
 } else {
-  console.error(`unknown command "${cmd}" — use dev or build`)
+  console.error(`unknown command "${cmd}" — use dev, build, check or outline`)
   process.exit(1)
 }
 

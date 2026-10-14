@@ -17,6 +17,7 @@ A deck must build and present fine without `fx.yaml`.
 - **reveal.js 5** for navigation, scaling, presenter view, scroll/reading view, PDF.
 - **Build:** Node + Vite (live reload), unified/remark + remark-directive, sharp (images), Playwright (PDF + effect harness).
 - **Offline is a hard requirement:** no CDN; fonts, libs and media bundled. YouTube embeds fall back to thumbnail + link.
+- **Private slides:** `{.private}` on a heading → shown when presenting locally (`dev`), stripped from every export (`build`, later `pack`/PDF) together with its notes, fx entries and media used only by it. Builds ship only referenced media. `dev --public` previews the export.
 - **Local-first:** `npm run dev` / `npm run present <deck>`. Publishing opt-in per deck (`publish: true`) → GitHub Pages. `npm run pack <deck>` → self-contained ZIP (Canvas fallback).
 
 ## content.md
@@ -34,6 +35,7 @@ A deck must build and present fine without `fx.yaml`.
   - classes: `.small` `.medium` `.large` `.left` `.right` `.full` `.bg` (bg gets readability overlay)
   - defaults inferred from context; responsive `srcset` (WebP/AVIF) generated at build
   - same syntax for `.mp4` and YouTube links
+  - a lone `.full` media on a slide fills it edge to edge (no padding, no chrome)
 
 ## Theme: `fontys`
 
@@ -67,6 +69,7 @@ A deck must build and present fine without `fx.yaml`.
 
 - **`/deck-new`** — turn input into a good `content.md`: blank scaffold, **PPTX import** (titles/sections/notes/images/recognisable layouts; Claude edits for brevity and suggests `==emphasis==`/`. . .`; un-convertible slides like SmartArt become a TODO + screenshot of the original), or other sources (outline, Word, article).
 - **`/deck-spice [slide] ["direction"]`** — incremental by default: only new/changed slides, repairs orphans, respects locks, shows a summary/diff. `--fresh` regenerates all except locked; `--force` regenerates everything. Content changes are proposed as diffs, never silent.
+- Both live in `.claude/skills/`. Deterministic parts are code: `present outline` (deck as JSON; per-slide content fingerprints vs `.fx-state.json` → `new`/`changed`/`spiced`, `--mark` records them) and `deck-new/scripts/pptx-extract.mjs` (PPTX → JSON + images, no dependencies).
 
 ## v1 — one real deck end-to-end
 

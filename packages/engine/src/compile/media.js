@@ -3,6 +3,7 @@ import { h } from 'hastscript'
 
 const VIDEO = /\.(mp4|webm|mov)$/i
 const YOUTUBE = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/
+const GMAPS = /^https?:\/\/(?:www\.|maps\.)?google\.[a-z.]+\/maps|^https?:\/\/maps\.google\.[a-z.]+\//
 const URL_RE = /(https?:\/\/[^\s)]+)/g
 
 export function figureFor(img, { inline = false } = {}) {
@@ -25,7 +26,24 @@ function mediaElement(src, alt, rest) {
       h('span.youtube-label', alt || 'Video on YouTube'),
     ])
   }
+  if (GMAPS.test(src)) {
+    // Same as YouTube: a link offline, a live (zoomable) map online. Built from q / z / t in the URL.
+    return h('a.map', { href: src, target: '_blank', rel: 'noopener', dataMap: mapEmbed(src, alt) }, [
+      h('span.map-label', alt || 'Map on Google Maps'),
+    ])
+  }
   return h('img', { src, alt, loading: 'lazy', ...rest })
+}
+
+// https://www.google.com/maps?q=Fontys+Venlo&z=4&t=k  or  …/maps/place/Fontys+Venlo/@51.35,6.15,15z
+function mapEmbed(src, alt) {
+  const u = new URL(src)
+  const place = u.pathname.match(/\/place\/([^/]+)/)?.[1]
+  const at = u.pathname.match(/@(-?[\d.]+),(-?[\d.]+),(\d+(?:\.\d+)?)z/)
+  const q = u.searchParams.get('q') ?? (place && decodeURIComponent(place.replace(/\+/g, ' '))) ?? (at && `${at[1]},${at[2]}`) ?? alt
+  const params = new URLSearchParams({ q, z: u.searchParams.get('z') ?? (at ? Math.round(at[3]) : 4), output: 'embed' })
+  if (u.searchParams.get('t')) params.set('t', u.searchParams.get('t'))
+  return `https://maps.google.com/maps?${params}`
 }
 
 function linkify(text) {

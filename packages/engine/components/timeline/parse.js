@@ -1,9 +1,10 @@
 // ::: timeline — a list of `**YEAR** ![logo](…) label` items.
 // `**2014–2021**` (or `2024–`) is a period: placed between its years, which become ticks.
+// `**2026+**` is a point that looks ahead: its tick reads "2026+" and the line ends in an arrow.
 import { h } from 'hastscript'
 import { toString } from 'hast-util-to-string'
 
-const YEARS = /^(\d{4})\s*(?:[–-]\s*(\d{4})?)?$/
+const YEARS = /^(\d{4})\s*(?:\+|[–-]\s*(\d{4})?)?$/
 
 export default function parse(el, { warn, slideId }) {
   const list = el.children.find((c) => c.tagName === 'ul' || c.tagName === 'ol')
@@ -23,18 +24,21 @@ export default function parse(el, { warn, slideId }) {
     const end = isPeriod ? (m[2] ? Number(m[2]) : null) : start
     const logo = parts.find((c) => c.tagName === 'figure' || c.tagName === 'img')
     const label = trim(parts.filter((c) => c !== strong && c !== logo))
-    return { start, end, open: isPeriod && !m[2], isPeriod, logo, label, year: strong ? toString(strong).trim() : '' }
+    const onward = !!m && toString(strong).trim().endsWith('+')
+    return { start, end, open: isPeriod && !m[2], isPeriod, onward, logo, label, year: strong ? toString(strong).trim() : '' }
   }).filter((i) => i.start != null)
 
   const ticks = [...new Set(items.flatMap((i) => (i.isPeriod ? [i.start, i.end] : [i.start])).filter((y) => y != null))].sort((a, b) => a - b)
   const max = Math.max(...ticks, ...items.filter((i) => i.open).map(() => now))
   // Periods get their own slot at their midpoint, so their logos don't collide with tick logos.
   const mids = items.filter((i) => i.isPeriod).map((i) => (i.start + (i.open ? max : i.end)) / 2)
+  const onward = new Set(items.filter((i) => i.onward).map((i) => i.start))
   const x = scale([...new Set([...ticks, ...mids, max])].sort((a, b) => a - b))
 
-  return h('div', { ...el.properties, className: [...el.properties.className, 'tl'] }, [
+  const ahead = onward.has(max)
+  return h('div', { ...el.properties, className: [...el.properties.className, 'tl', ahead ? 'tl-ahead' : null] }, [
     h('div.tl-line'),
-    h('div.tl-ticks', ticks.map((y) => h('div.tl-tick', { style: `--x:${x(y)}` }, [h('span.tl-year', String(y)), h('span.tl-dot')]))),
+    h('div.tl-ticks', ticks.map((y) => h('div.tl-tick', { className: onward.has(y) ? ['tl-onward'] : [], style: `--x:${x(y)}` }, [h('span.tl-year', onward.has(y) ? `${y}+` : String(y)), h('span.tl-dot')]))),
     h('ol.tl-items', items.map((i) => {
       const x0 = x(i.start)
       const x1 = x(i.open ? max : i.end)

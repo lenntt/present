@@ -1,0 +1,15 @@
+/* `::: more` — a quiet pointer to further info, tucked top-right. */
+.more.component {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.more.component a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+}

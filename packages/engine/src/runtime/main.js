@@ -30,6 +30,7 @@ for (const w of deck.warnings) console.warn(`[deck] ${w}`)
 const slides = document.querySelector('.reveal .slides')
 slides.innerHTML = deck.html
 addChrome(slides, deck.meta)
+if (navigator.onLine) embedOnline(slides)
 
 const fx = createFx({ Reveal, fx: deck.fx, meta: deck.meta, modules, still: reading || printing })
 fx.attach()
@@ -57,6 +58,7 @@ window.__present = { fx, warnings: deck.warnings }
 
 Reveal.on('slidechanged', ({ currentSlide, previousSlide }) => {
   previousSlide?.querySelectorAll('video').forEach((v) => v.pause())
+  previousSlide?.querySelectorAll('iframe.youtube').forEach((f) => f.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'))
   currentSlide.querySelectorAll('video[data-autoplay]').forEach((v) => v.play().catch(() => {}))
 })
 
@@ -69,6 +71,36 @@ function addChrome(slides, meta) {
     chrome.innerHTML = `<span class="chrome-logo" aria-hidden="true"></span><span class="chrome-path">~/${meta.slug ?? 'deck'}/<b>${s.dataset.slide}</b></span><span class="chrome-count">${String(i + 1).padStart(2, '0')}/${total}</span>`
     s.querySelector('.frame')?.appendChild(chrome)
   })
+}
+
+// Offline the YouTube/map links stay links; online they become the player / a live map.
+function embedOnline(slides) {
+  for (const a of slides.querySelectorAll('a.youtube[data-youtube]')) {
+    const iframe = document.createElement('iframe')
+    iframe.className = 'youtube'
+    iframe.src = `https://www.youtube-nocookie.com/embed/${a.dataset.youtube}?enablejsapi=1&rel=0`
+    iframe.title = a.textContent
+    iframe.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture'
+    iframe.allowFullscreen = true
+    a.replaceWith(iframe)
+  }
+  for (const a of slides.querySelectorAll('a.map[data-map]')) {
+    const iframe = document.createElement('iframe')
+    iframe.className = 'map'
+    iframe.src = a.dataset.map
+    iframe.title = a.textContent
+    iframe.loading = 'lazy'
+    iframe.referrerPolicy = 'no-referrer-when-downgrade'
+    a.replaceWith(iframe)
+  }
+  // Clicking the player or map hands it keyboard focus, so arrows would seek instead of advance.
+  // Take focus back right after; the click itself still reaches the player.
+  window.addEventListener('blur', () => setTimeout(() => {
+    if (document.activeElement?.matches('iframe.youtube, iframe.map')) {
+      document.activeElement.blur()
+      window.focus()
+    }
+  }))
 }
 
 function byName(globbed, re) {

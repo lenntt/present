@@ -7,8 +7,20 @@ Design decisions: [docs/design.md](docs/design.md) · preset ideas: [docs/preset
 npm install
 npm run dev -- zambia      # live-reloading presentation (decks/zambia)
 npm run build -- zambia    # static site in dist/zambia/
-npm run check -- zambia    # step through every slide; report errors, orphaned fx, leaks
+npm run check -- zambia    # step through every slide; report errors, orphaned fx, overflow, leaks
+npm run dev -- zambia --public   # preview exactly what gets exported (private slides left out)
 ```
+
+With Claude Code, in this repo:
+
+```
+/deck-new ~/Documents/talk.pptx my-talk    # import a PowerPoint (or an outline, Word/PDF, or nothing) → decks/my-talk/content.md
+/deck-spice my-talk                        # write fx.yaml: motion for new/changed slides, then run check
+/deck-spice my-talk career "more glitch"   # one slide, with a direction; --fresh = all unlocked slides, --force = everything
+```
+
+`npx present outline <deck>` prints the deck as JSON (slides, fx status, presets, components) — what `/deck-spice` reads.
+`.fx-state.json` remembers which slide versions were spiced, so a re-run only touches what changed.
 
 Keys while presenting: `→`/`space` next step · `S` speaker notes · `T` light/dark · `F` fullscreen · `Esc` overview.
 `?view=read` opens the scroll view.
@@ -36,9 +48,12 @@ mode: dark                             # or light
 
 # Part 1                               ← section divider
 ## Slide title {#stable-id}            ← new slide; {#id} optional
+## About me {.private}                 ← shown when presenting locally, never exported
 ---                                    ← slide without a title
 
 A ==key word== lights up.
+
+Tip: a paragraph or bullet starting with "Tip:" gets the tip style (badge + callout).
 
 . . .                                  ← pause: the rest appears on the next click
 
@@ -48,6 +63,7 @@ A ==key word== lights up.
 - **1988** ![](img/avatar.png) Born in NL
 - **2014–2021** ![](img/ibm.png) Quality Lead Architect   ← period
 - **2024–** ![](img/fontys.png) Lecturer                  ← ongoing
+- **2026+** What's next?                               ← looking ahead: line ends in an arrow
 :::
 
 ::: columns
@@ -62,10 +78,16 @@ Right column
 Only in the speaker view.
 :::
 
+<!-- fx: a slider that animates from "vibe coding" to "full control" -->   ← idea for /deck-spice (never shown)
+<!-- anything else -->                                                     ← private remark (never shown)
+
 ::: aside
 Extra explanation, only in the reading view.
 :::
 ```
+
+A `{.private}` slide is shown in `npm run dev` (marked "private — not exported" in the footer) and left out of every build:
+its text, notes, `fx.yaml` entry and any media only it uses don't end up in `dist/`. The build only ships media that the exported slides reference.
 
 An unknown `::: name` block renders as plain Markdown in `<div class="name">`, with a build warning.
 

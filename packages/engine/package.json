@@ -8,7 +8,8 @@
   "exports": {
     "./compile": "./src/compile/index.js",
     "./effect": "./src/runtime/effect.js",
-    "./vite": "./src/vite-plugin.js"
+    "./vite": "./src/vite-plugin.js",
+    "./mascot": "./mascot/index.js"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.2.6",

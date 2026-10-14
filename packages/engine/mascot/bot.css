@@ -1,0 +1,68 @@
+/* The robot genie (= AI): cool grey-blue metal rising from a lab flask of Fontys-purple liquid.
+   Its screens (face and laptop) are Fontys purple with white glowing marks; antenna and sparkles are Fontys purple. */
+.bot {
+  --bot-shell: #d3dce6;
+  --bot-limb: #a9b8c8;
+  --bot-outline: #8597ab;
+  --bot-screen: #663366;
+  --bot-accent: #663366;
+  --bot-glow: #fbf2fb;
+  --bot-error: #ff5d55;
+  --bot-code-alt: #d9a9d9;
+  --bot-glass: #663366;
+  --bot-glass-edge: #663366;
+  --bot-glass-tint: rgba(102, 51, 102, 0.08);
+  --bot-liquid-top: #b07ab0;
+  --bot-cork: #c79a6b;
+  display: block;
+  width: 240px;
+  overflow: visible;
+}
+
+.mode-dark .bot {
+  --bot-glass: #7a3f7a;
+  --bot-glass-edge: #c08ac0;
+  --bot-glass-tint: rgba(192, 138, 192, 0.1);
+  --bot-shell: #c3cedb;
+  --bot-limb: #8d9db0;
+  --bot-outline: transparent;
+  --bot-screen: #663366;
+  --bot-accent: #c08ac0;
+}
+
+.bot-shell { fill: var(--bot-shell); stroke: var(--bot-outline); stroke-width: 2.5; }
+.bot-arm { stroke: var(--bot-limb); stroke-width: 13; stroke-linecap: round; }
+.bot-screen { fill: var(--bot-screen); }
+.bot-fold-edge { fill: none; stroke: var(--bot-outline-arm, #8597ab); stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; }
+.bot-fold-arm { fill: none; stroke: var(--bot-limb); stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+.bot-antenna { stroke: var(--bot-limb); stroke-width: 5; stroke-linecap: round; }
+.bot-bulb { fill: var(--bot-accent); filter: drop-shadow(0 0 6px var(--bot-accent)); }
+.bot-eye, .bot-mouth, .bot-dot { fill: var(--bot-glow); filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7)); }
+.bot-line { fill: none; stroke: var(--bot-glow); stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7)); }
+.bot-err { stroke: var(--bot-error); filter: drop-shadow(0 0 4px var(--bot-error)); }
+.bot-panel { fill: var(--bot-shell); stroke: var(--bot-outline); stroke-width: 2.5; }
+.bot-panel-screen { fill: var(--bot-screen); }
+.bot-code-line { fill: var(--bot-glow); }
+.bot-code-line.alt { fill: var(--bot-code-alt); }
+.bot-code-cursor { fill: var(--bot-glow); }
+.bot-smoke-fill { stop-color: var(--bot-shell); }
+.bot-smoke-line { stop-color: var(--bot-outline); }
+.bot-shadow { fill: rgba(0, 0, 0, 0.14); }
+.bot-glass { fill: var(--bot-glass-tint); stroke: var(--bot-glass-edge); stroke-width: 2.5; stroke-linejoin: round; }
+.bot-liquid { fill: var(--bot-glass); }
+.bot-surface { stroke: var(--bot-liquid-top); stroke-width: 2; }
+.bot-bubble { fill: var(--bot-liquid-top); }
+.bot-marks { stroke: var(--bot-glass-edge); stroke-width: 2; stroke-linecap: round; opacity: 0.6; }
+.bot-lip { fill: var(--bot-glass-edge); }
+.bot-shine { fill: none; stroke: rgba(255, 255, 255, 0.7); stroke-width: 3.5; stroke-linecap: round; }
+.bot-cork { fill: var(--bot-cork); }
+.bot-spark { fill: var(--bot-accent); filter: drop-shadow(0 0 5px var(--bot-accent)); }
+.bot-face { display: none; }
+.bot-thin { stroke-width: 3.5; }
+.bot-check { fill: none; stroke: var(--bot-glow); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.bot-lens-glass { fill: rgba(255, 255, 255, 0.35); stroke: var(--bot-outline); stroke-width: 3.5; }
+.bot-lens-handle { stroke: var(--bot-outline); stroke-width: 5; stroke-linecap: round; }
+.bot-meter-frame { fill: var(--bot-shell); stroke: var(--bot-outline); stroke-width: 2.5; }
+.bot-meter-fill { fill: var(--bot-accent); }
+.bot-speech-shape { fill: #fff; stroke: var(--bot-outline); stroke-width: 2.5; stroke-linejoin: round; }
+.bot-speech-text { fill: var(--bot-accent); font: 700 30px 'JetBrains Mono', monospace; text-anchor: middle; }

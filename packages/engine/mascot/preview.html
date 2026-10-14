@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bit — mascot prototype</title>
+  <style>
+    body { margin: 0; font-family: 'Roboto', system-ui, sans-serif; background: #faf8fb; color: #241626; }
+    h1 { font-family: 'Roboto Condensed', sans-serif; color: #663366; margin: 0 0 4px; font-size: 40px; }
+    p { margin: 0 0 24px; color: #6e6072; }
+    section { padding: 40px 48px; }
+    .mode-dark { background: #150c18; color: #f0e9f3; }
+    .mode-dark h2 { color: #d4afd4; }
+    h2 { font: 700 16px 'JetBrains Mono', monospace; color: #663366; margin: 0 0 16px; }
+    .row { display: flex; flex-wrap: wrap; gap: 32px; align-items: end; }
+    figure { margin: 0; text-align: center; font: 14px 'JetBrains Mono', monospace; }
+    figure .bot { width: 160px; }
+    .stage { display: flex; gap: 48px; align-items: center; flex-wrap: wrap; }
+    .hero { position: relative; width: 700px; height: 460px; display: flex; align-items: center; justify-content: center; border-radius: 16px; background: radial-gradient(#e4dce7 1.4px, transparent 1.6px) 0 0 / 28px 28px; }
+    .hero .bot { position: relative; z-index: 1; width: 250px; }
+    .controls h3 { font: 700 13px 'JetBrains Mono', monospace; color: #6e6072; margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .scene { border-color: #0f8a45; color: #0f8a45; }
+    .scene:hover { background: #0f8a45; }
+    .note { font: 14px 'JetBrains Mono', monospace; color: #0f8a45; min-height: 1.4em; margin-top: 12px; }
+    button { font: 15px 'JetBrains Mono', monospace; padding: 10px 16px; margin: 0 8px 8px 0; border: 2px solid #663366; background: #fff; color: #663366; border-radius: 8px; cursor: pointer; }
+    button:hover { background: #663366; color: #fff; }
+  </style>
+</head>
+<body>
+  <section>
+    <h1>Bit — prototype</h1>
+    <p>Bit is the AI: a grey-blue robot genie that lives in a lab flask of Fontys-purple liquid. Careful what you wish (prompt) for. Try the motions, or a scene.</p>
+    <div class="stage">
+      <div class="hero" id="hero"></div>
+      <div class="controls">
+        <h3>bot</h3><div id="bot-buttons"></div>
+        <h3>scenes</h3><div id="scene-buttons"></div>
+        <div class="note" id="note"></div>
+      </div>
+    </div>
+  </section>
+  <section class="mode-light"><h2>// moods · light</h2><div class="row" id="light"></div></section>
+  <section class="mode-dark"><h2>// moods · dark</h2><div class="row" id="dark"></div></section>
+  <script type="module">
+    import '@fontsource/roboto/400.css'
+    import '@fontsource/roboto-condensed/700.css'
+    import '@fontsource/jetbrains-mono/700.css'
+    import gsap from 'gsap'
+    import { createBot, MOODS } from './index.js'
+
+    const stage = document.getElementById('hero')
+    const bot = createBot({ mood: 'happy' })
+    stage.append(bot.el)
+    bot.idle()
+
+    let current
+    const run = (fn) => () => { current?.progress(1); current = fn() }
+    const button = (host, label, fn, cls) => {
+      const b = document.createElement('button')
+      b.textContent = label
+      if (cls) b.className = cls
+      b.onclick = run(fn)
+      document.getElementById(host).append(b)
+    }
+    const note = (text) => gsap.set('#note', { textContent: text })
+
+    // Every motion Bit knows gets a button, including ones added later.
+    const motions = Object.keys(bot).filter((k) => typeof bot[k] === 'function' && !['mood', 'face', 'idle', 'destroy'].includes(k))
+    for (const name of motions) {
+      button('bot-buttons', `${name}()`, () => bot[name]().eventCallback('onComplete', () => name !== 'retreat' && bot.mood('happy')))
+    }
+
+    // Scenes: what Bit can say on a slide.
+    button('scene-buttons', 'your wish is my prompt', () => {
+      note('Uncork the AI, make a wish, get code')
+      return gsap.timeline()
+        .add(bot.retreat())
+        .add(bot.emerge(), '+=0.4')
+        .add(bot.grantWish(), '+=0.2')
+        .add(bot.writeCode(), '+=0.1')
+    }, 'scene')
+    button('scene-buttons', 'careful what you wish for', () => {
+      note('A sloppy wish, granted literally')
+      return gsap.timeline()
+        .add(bot.grantWish())
+        .add(bot.glitch(), '+=0.1')
+        .add(bot.think(), '+=0.3')
+    }, 'scene')
+    button('scene-buttons', 'back in the bottle', () => {
+      note('You decide when the AI comes out')
+      return gsap.timeline().add(bot.retreat()).add(bot.emerge(), '+=1.2')
+    }, 'scene')
+
+    for (const id of ['light', 'dark']) {
+      for (const mood of MOODS) {
+        const f = document.createElement('figure')
+        f.append(createBot({ mood }).el, mood)
+        document.getElementById(id).append(f)
+      }
+    }
+  </script>
+</body>
+</html>
