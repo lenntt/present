@@ -48,6 +48,8 @@ export default function typeIn(el, params, { t, beat, index }) {
     tl.set(box, { visibility: 'visible' }, start + first * each)
   }
   if (units.length) tl.set(units.at(-1), { attr: { 'data-caret': 0 } }, start + length + t(params.linger, t('2b')))
+  // A set exactly at the end of the timeline doesn't always render when played to the end: pad it.
+  tl.to({}, { duration: 0.05 })
 
   return fromTimeline(tl, { onDestroy: () => (el.innerHTML = original) })
 }
