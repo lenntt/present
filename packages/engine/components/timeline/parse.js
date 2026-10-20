@@ -1,6 +1,7 @@
 // ::: timeline — a list of `**YEAR** ![logo](…) label` items.
 // `**2014–2021**` (or `2024–`) is a period: placed between its years, which become ticks.
 // `**2026+**` is a point that looks ahead: its tick reads "2026+" and the line ends in an arrow.
+// A nested list item under an entry becomes a smaller, muted subline below its label.
 import { h } from 'hastscript'
 import { toString } from 'hast-util-to-string'
 
@@ -23,9 +24,11 @@ export default function parse(el, { warn, slideId }) {
     const isPeriod = !!m && /[–-]/.test(toString(strong))
     const end = isPeriod ? (m[2] ? Number(m[2]) : null) : start
     const logo = parts.find((c) => c.tagName === 'figure' || c.tagName === 'img')
-    const label = trim(parts.filter((c) => c !== strong && c !== logo))
+    const sublists = parts.filter((c) => c.tagName === 'ul' || c.tagName === 'ol')
+    const subs = sublists.flatMap((l) => l.children.filter((c) => c.tagName === 'li').map((c) => trim(flatten(c))))
+    const label = trim(parts.filter((c) => c !== strong && c !== logo && !sublists.includes(c)))
     const onward = !!m && toString(strong).trim().endsWith('+')
-    return { start, end, open: isPeriod && !m[2], isPeriod, onward, logo, label, year: strong ? toString(strong).trim() : '' }
+    return { start, end, open: isPeriod && !m[2], isPeriod, onward, logo, label, subs, year: strong ? toString(strong).trim() : '' }
   }).filter((i) => i.start != null)
 
   const ticks = [...new Set(items.flatMap((i) => (i.isPeriod ? [i.start, i.end] : [i.start])).filter((y) => y != null))].sort((a, b) => a - b)
@@ -50,7 +53,7 @@ export default function parse(el, { warn, slideId }) {
       }, [
         i.isPeriod ? h('span.tl-span') : null,
         i.logo ? h('div.tl-logo', [i.logo]) : null,
-        h('div.tl-label', i.label),
+        h('div.tl-label', [...i.label, ...i.subs.map((sub) => h('span.tl-sub', sub))]),
       ])
     })),
   ])

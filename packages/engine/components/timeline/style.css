@@ -113,6 +113,12 @@
   color: var(--muted);
 }
 
+.tl-sub {
+  display: block;
+  font-size: 18px;
+  color: var(--muted);
+}
+
 .tl-label strong {
   color: var(--brand);
 }

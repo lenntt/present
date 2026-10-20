@@ -68,6 +68,7 @@ Tip: a paragraph or bullet starting with "Tip:" gets the tip style (badge + call
 ::: timeline
 - **1988** ![](img/avatar.png) Born in NL
 - **2014–2021** ![](img/ibm.png) Quality Lead Architect   ← period
+  - Watson/Cognos                                      ← nested item: smaller subline
 - **2024–** ![](img/fontys.png) Lecturer                  ← ongoing
 - **2026+** What's next?                               ← looking ahead: line ends in an arrow
 :::
