@@ -1,0 +1,60 @@
+.context-window {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  font: 22px/1 var(--font-mono);
+  color: var(--muted);
+}
+
+/* The fresh session sits on top of the full one. */
+.context-window.cw-fresh {
+  z-index: 1;
+  background: var(--bg);
+}
+
+.cw-head,
+.cw-gauge {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.cw-pct { color: var(--text); font-weight: 700; }
+.cw-cmd { color: var(--accent); }
+
+.cw-tank {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  padding: 6px;
+  border: 3px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.cw-seg {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 19px;
+  color: #fff;
+}
+.cw-sys { background: var(--brand-fill); }
+.cw-agents { background: var(--accent); }
+.cw-files { background: #8597ab; }
+.cw-tools { background: #a9b5c3; color: #241626; }
+.cw-chat { background: var(--muted); }
+
+.cw-gauge { margin: 18px 0 8px; }
+.cw-verdict { display: inline-block; color: var(--accent); transform-origin: right center; }
+
+.cw-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+.cw-bar i { display: block; height: 100%; border-radius: 6px; }

@@ -9,7 +9,7 @@ affiliation:
 lang: en
 mode: light
 tempo: 120
-ends: 16:30 Africa/Lusaka    # session end, local time in Lusaka — drives the countdown
+ends: 17:00 Africa/Lusaka    # session end, local time in Lusaka — drives the countdown
 ---
 
 ---
@@ -75,31 +75,15 @@ leading teams towards continuous delivery
 ![Reliance on AI by task](img/dora-2025-reliance.png)
 
 
-## Faster at making instable software (?) {#ai-impact}
+## Faster, at making instable software (?) {#ai-impact}
 
 ![Estimated effect of AI adoption on key outcomes](img/dora-2025-ai-impact.png "Source: DORA, State of AI-assisted Software Development (Sept 2025), via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
 
-
-## AI in software development
-
-::: timeline
-- **2021** GitHub Copilot
-  - _A better auto-complete_
-- **2025** Agentic coding tools
-  - e.g. Claude Code
-  - _"Vibe coding"_
-- **2026** Autonomous agents, loops
-- **2027+** ??? (not the topic of today)
-:::
-
 _"How do we keep up with the speed, without ==sacrificing quality==?"_
 
-::: notes
-- I want to share a few things about my workflow. There is no single right one.
-- In many ways, not that much changed opposed to CD: get the right quality gates,learn to trust the process.
-- Best thing to do, is keep yourself updated, experiment, stay critical.
-:::
+<!-- fx: Bit to operating a slider that animates (after this) from "vibe coding" to "stay in control" -->
 
+**Accountability -> you**
 
 ## AI is an amplifier {#amplifier}
 
@@ -124,9 +108,11 @@ _"How do we keep up with the speed, without ==sacrificing quality==?"_
 
 . . .
 
-Great for feedback, quick experiments and personal projects.
+Great for quick feedback, experiments and personal projects.
 
-<!-- fx: Bit to operating a slider that animates from "vibe coding" to "stay in control" -->
+. . .
+
+Not (often) a great way to **professionally** deliver software to customers.
 
 ::: notes
 Encourage students to try it out, its fun.
@@ -141,11 +127,26 @@ I've also a more serious project that is running for a year, with different coll
 The hard thing is to stay in control. Its very tempting to just press enter.
 :::
 
-. . .
 
-Not (often) a great way to **professionally** deliver software to customers.
+## AI in software development
 
-**Accountability -> you**
+::: timeline
+- **2021** GitHub Copilot (preview)
+  - _A better auto-complete_
+- **2022** ChatGPT
+- **2025** Agentic coding tools
+  - e.g. Claude Code
+  - _"Vibe coding"_
+- **2026** Autonomous agents, loops
+- **2027+** ??? (not the topic of today)
+:::
+
+
+::: notes
+- I want to share a few things about my workflow. There is no single right one.
+- In many ways, not that much changed opposed to CD: get the right quality gates,learn to trust the process.
+- Best thing to do, is keep yourself updated, experiment, stay critical.
+:::
 
 
 ## Getting started - tooling {#tooling}
@@ -154,7 +155,7 @@ The right tooling:
 - Don't: use a webchat (e.g. ChatGPT)
 - Instead: Use an IDE or CLI, e.g. Claude Code, OpenCode, ...
 
-![J-curve of AI value realization](img/claude-code.png "Example: Claude code")
+![Claude code](img/claude-code.png "Example: Claude code")
 
 
 ## Getting started - alignment {#plan}
@@ -230,19 +231,19 @@ Custom skills is a `.md` file with instructions -> give the agents a sequence of
 
 ## Finally {#final}
 
-- Criticize AI and AI output
+- ==Criticize== AI and AI output
   - Stay in control, ==you== are ==accountable== for your work
 
 . . .
 
-- If you want to ==learn== something: ==turn off AI generation==
+- ==Learning== is important (also after graduating)
+  - ==AI can not learn for you==
 
 . . .
 
-- Stay ==curious==, ==experiment==. Start a personal project
+- Stay ==curious==, ==experiment==. Start a personal project (with AI).
 
 . . .
-
 
 - Contribute to ==make the world a better place== for everyone,
     _AI might not do that for us_

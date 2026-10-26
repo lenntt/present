@@ -1,6 +1,7 @@
 // A slider from "vibe coding" to "stay in control", with Bit riding it as the handle.
 // Entrance: the slider appears and Bit emerges at the vibe-coding end. Click: Bit glides over to
-// "stay in control" and folds its arms. params: at (default 6b), from / to (labels), width (px, default 560).
+// "stay in control" and folds its arms. params: at (default 6b), from / to (labels), width (px, default 560),
+// left / right / top (CSS, default right: 120px, top: 250px).
 import { gsap, fromTimeline } from '@present/engine/effect'
 import { createBot } from '@present/engine/mascot'
 import './control-slider.css'
@@ -14,6 +15,9 @@ export default function controlSlider(el, params, { t, slide, reduced }) {
   box.className = 'control-slider'
   box.setAttribute('aria-hidden', 'true')
   box.style.width = `${width}px`
+  if (params.left) Object.assign(box.style, { left: params.left, right: 'auto' })
+  if (params.right) box.style.right = params.right
+  if (params.top) box.style.top = params.top
   box.innerHTML = `
     <div class="cs-track"><div class="cs-fill"></div></div>
     <div class="cs-knob"></div>

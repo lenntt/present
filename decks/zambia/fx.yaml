@@ -21,12 +21,6 @@ slides:
     intent: Hard cut into the music video — no transition between "us" and "it".
     transition: none
 
-  software-engineers-using-ai-sept-2025:
-    intent: Two charts, one at a time, so the room reads the first before the second lands.
-    effects:
-      - target: figure.media
-        custom: rise-in
-        params: { stagger: 2b }
 
   venlo:
     intent: A live map, starting far away with Venlo pinned — I zoom in by hand, from Zambia to my campus.
@@ -49,6 +43,25 @@ slides:
           at: 4.5b
           play: [wave]
 
+  software-engineers-rely-on-ai-sept-2025:
+    intent: Two charts, one at a time, so the room reads the first before the second lands.
+    effects:
+      - target: figure.media
+        custom: rise-in
+        params: { stagger: 2b }
+
+  ai-impact:
+    intent: The question types itself out and "sacrificing quality" lights up; Bit rides a slider at "vibe coding" — the click slides it to "stay in control", the next one slams down "Accountability → you".
+    effects:
+      - target: .col-main > p:first-of-type
+        custom: type-in
+        params: { by: words, at: 0.5b, speed: 4 }
+      - custom: control-slider        # author hint: Bit operating a slider from vibe coding to staying in control, after the question
+        params: { at: 5.5b, left: 120px, top: 470px, from: vibe coding, to: stay in control }
+      - target: .col-main > p:last-of-type > strong
+        custom: rubber-stamp          # last click, once Bit has made it to "stay in control"
+    emphasisParams: { delay: 4b }   # "sacrificing quality" lights up once the question has typed out
+
   career:
     intent: Let the line draw my career left to right; Fontys is the destination.
     components:
@@ -60,26 +73,34 @@ slides:
         params: { at: 9b, y: 16 }   # the LinkedIn pointer arrives quietly once Fontys has landed
 
   ai-in-software-development:
-    intent: The line runs from Copilot into the unknown (2027+); then the real question types itself out.
+    intent: The line runs from Copilot into the unknown (2027+); once it reaches the arrow, Bit pops up above it and ponders what's next.
     components:
       timeline:
-        duration: 6b
+        duration: 7b
     effects:
-      - target: .slide-body > p
-        custom: type-in
-        params: { by: words, at: 7b, speed: 4 }
-    emphasisParams: { delay: 10b }   # "sacrificing quality" lights up once the question has typed out
+      - preset: bit
+        params:
+          place: { right: 150px, top: 150px }
+          size: 220
+          enter: emerge
+          at: 7.5b
+          play: [think]
 
   vibe-coding:
-    intent: FAAFO lands as keycaps and Bit pops out at the "vibe coding" end of a slider; "Accountability → you" slams down, and on the next click Bit glides over to "stay in control" and folds its arms.
+    intent: FAAFO lands as keycaps; "great for experiments" uncorks Bit, who happily codes away — then "professionally" slams down as the verdict.
     effects:
       - target: ul strong
         preset: keycap-stamp
+      - target: .slide-body > p:nth-of-type(2)   # "Great for quick feedback, experiments…"
+        preset: bit
+        params:
+          place: { right: 200px, bottom: 200px }
+          enter: emerge
+          at: 0.5b
+          play: [writeCode]
       - target: .slide-body > p:last-of-type > strong
         custom: rubber-stamp
         params: { onEntrance: true, at: 1.5b }   # slams down as its line appears
-      - custom: control-slider        # author hint: Bit operating a slider from vibe coding to staying in control
-        params: { at: 6b, from: vibe coding, to: stay in control }
 
   amplifier:
     intent: Zoom in — AI magnifies whatever is already there, good or bad; the two charts land one after the other.
@@ -111,17 +132,15 @@ slides:
           play: [{ motion: ask, args: { keep: true } }]
 
   context:
-    intent: Context rot — the endless session gets struck out while Bit's meter fills until it's dizzy; the click restarts Bit fresh.
+    intent: Context rot — the endless session gets struck out while the context window fills up and the answers get "dumber"; "start over" drops a fresh, nearly empty session on top.
     effects:
       - target: .slide-body ul
         custom: dont-instead
-      - preset: bit
-        params:
-          mood: happy
-          at: 1b
-          playAt: 2b
-          play: [overload]
-          click: [restart]
+      - custom: context-window        # author hint: what's in the context, and that it gets 'dumber' when full
+        params: { at: 2.5b }
+      - target: .slide-body > p.fragment
+        custom: context-window
+        params: { clear: true }
 
   small:
     intent: The big build gets struck out; one big block is sliced into thin vertical stories, and the first slice lights up — small enough to validate.
@@ -132,13 +151,15 @@ slides:
         params: { at: 3.5b }
 
   parallel:
-    intent: Parallel agents — Bit splits into copies; on the click a git graph gives each agent its own worktree lane.
+    intent: Parallel agents — Bit splits into copies; when the worktree line appears, a git graph gives each agent its own lane.
     effects:
       - preset: bit
         params:
           at: 1b
           play: [multiply]
-      - custom: git-worktree
+      - target: .slide-body > p.fragment
+        custom: git-worktree
+        params: { onEntrance: true, at: 1b }
 
   custom-skills:
     intent: The command types itself like a wish; then the skill behind it writes itself out as a short .md recipe, each step ticked off.
@@ -153,7 +174,7 @@ slides:
           lines: [read the deck, pick the slides, direct each slide, write fx.yaml, run present check → ok]
 
   final:
-    intent: '"you are accountable" lights up; on the next click "learn" and "turn off AI" land and Bit takes the hint, corking itself in its flask; the last click leaves the human with the job — "make the world a better place".'
+    intent: '"you are accountable" lights up; on the next click "learn" and "turn off AI" land and Bit takes the hint, corking itself in its flask; then "curious, experiment" — and the last click leaves the human with the job: "make the world a better place".'
     effects:
       # one glow sequence per part, so each key word lands right after its own click
       - target: .slide-body > ul:nth-of-type(1) mark
@@ -163,6 +184,9 @@ slides:
         preset: neon-glow
         params: { delay: 0.5b, stagger: 1b }      # learn 0.5b, "turn off AI generation" 1.5b
       - target: .slide-body > ul:nth-of-type(3) mark
+        preset: neon-glow
+        params: { delay: 0.5b, stagger: 1b }      # curious 0.5b, experiment 1.5b
+      - target: .slide-body > ul:nth-of-type(4) mark
         preset: neon-glow
         params: { delay: 0.5b }
       - target: .slide-body > ul:nth-of-type(2)  # Bit stands there from the start; its motion plays with this part

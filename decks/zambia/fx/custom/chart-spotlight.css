@@ -1,0 +1,56 @@
+.chart-spotlight {
+  --cs-ratio: 16 / 9;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size;
+}
+
+.csp-pic {
+  position: relative;
+  width: min(100cqw, 100cqh * var(--cs-ratio));
+  aspect-ratio: var(--cs-ratio);
+  line-height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.csp-pic > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.csp-band {
+  --cs-color: var(--accent);
+  position: absolute;
+  border: 4px solid var(--cs-color);
+  border-radius: 10px;
+  box-shadow: 0 0 0 200vmax rgb(0 0 0 / var(--cs-dim)), 0 0 24px var(--cs-color);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.csp-tag {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  translate: 0 -50%;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: var(--cs-color);
+  color: #fff;
+  font: 700 26px/1.2 var(--font-mono, ui-monospace, monospace);
+  white-space: nowrap;
+}
+
+.csp-band[data-side='above'] .csp-tag {
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: calc(100% + 10px);
+  translate: none;
+}

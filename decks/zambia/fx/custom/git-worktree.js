@@ -1,10 +1,11 @@
 // A small git graph draws itself: main runs along, two worktree branches fork off on their own
-// lanes and merge back — parallel agents that don't trip over each other. Drawn on a click.
-// params: left / bottom (CSS, default 120px / 130px), width (px, default 860).
+// lanes and merge back — parallel agents that don't trip over each other. Drawn on a click — or, with
+// onEntrance: true, `at` (default 1b) after its target (e.g. a `. . .` fragment) appears.
+// params: left / bottom (CSS, default 120px / 130px), width (px, default 860), onEntrance, at.
 import { gsap, fromTimeline } from '@present/engine/effect'
 import './git-worktree.css'
 
-export const steps = 1
+export const steps = (params) => (params.onEntrance ? 0 : 1)
 
 const SVG = `<svg viewBox="0 0 860 220" aria-hidden="true">
   <path class="gw-line gw-main" d="M20 110 H840"/>
@@ -34,17 +35,19 @@ export default function gitWorktree(el, params, { t, slide }) {
 
   const tl = gsap.timeline()
   tl.fromTo(box, { autoAlpha: 0 }, { autoAlpha: 0, duration: 0.001 }, 0)
-  tl.addLabel('step1')
-  tl.set(box, { autoAlpha: 1 }, 'step1')
-  tl.fromTo(lines[0], { strokeDashoffset: lines[0].dataset.len }, { strokeDashoffset: 0, duration: t('3b'), ease: 'none' }, 'step1')
-  tl.fromTo(lines[1], { strokeDashoffset: lines[1].dataset.len }, { strokeDashoffset: 0, duration: t('2.5b'), ease: 'none' }, `step1+=${t('0.5b')}`)
-  tl.fromTo(lines[2], { strokeDashoffset: lines[2].dataset.len }, { strokeDashoffset: 0, duration: t('2b'), ease: 'none' }, `step1+=${t('0.9b')}`)
+  // A "step1" label marks a click for fromTimeline, so the entrance variant uses its own label.
+  const step = params.onEntrance ? 'draw' : 'step1'
+  tl.addLabel(step, params.onEntrance ? t(params.at, t('1b')) : undefined)
+  tl.set(box, { autoAlpha: 1 }, step)
+  tl.fromTo(lines[0], { strokeDashoffset: lines[0].dataset.len }, { strokeDashoffset: 0, duration: t('3b'), ease: 'none' }, step)
+  tl.fromTo(lines[1], { strokeDashoffset: lines[1].dataset.len }, { strokeDashoffset: 0, duration: t('2.5b'), ease: 'none' }, `${step}+=${t('0.5b')}`)
+  tl.fromTo(lines[2], { strokeDashoffset: lines[2].dataset.len }, { strokeDashoffset: 0, duration: t('2b'), ease: 'none' }, `${step}+=${t('0.9b')}`)
   // Commits pop roughly as the lines pass them (left to right).
   q('.gw-dot').forEach((dot) => {
     const x = Number(dot.getAttribute('cx'))
-    tl.fromTo(dot, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: t('0.5b'), ease: 'back.out(3)' }, `step1+=${t('3b') * (x / 860)}`)
+    tl.fromTo(dot, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: t('0.5b'), ease: 'back.out(3)' }, `${step}+=${t('3b') * (x / 860)}`)
   })
-  tl.fromTo(q('.gw-label'), { autoAlpha: 0 }, { autoAlpha: 1, duration: t('0.5b'), stagger: t('0.5b') }, `step1+=${t('1.5b')}`)
+  tl.fromTo(q('.gw-label'), { autoAlpha: 0 }, { autoAlpha: 1, duration: t('0.5b'), stagger: t('0.5b') }, `${step}+=${t('1.5b')}`)
 
   return fromTimeline(tl, { onDestroy: () => box.remove() })
 }
