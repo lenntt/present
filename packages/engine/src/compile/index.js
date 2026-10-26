@@ -17,6 +17,7 @@ import YAML from 'yaml'
 import { createHash } from 'node:crypto'
 import remarkAttributes from './attributes.js'
 import remarkMark from './mark.js'
+import remarkDiff from './diff.js'
 import { figureFor } from './media.js'
 
 const ENGINE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
@@ -40,6 +41,7 @@ export async function compileDeck(deckDir, { includePrivate = true } = {}) {
     .use(remarkDirective)
     .use(remarkAttributes)
     .use(remarkMark)
+    .use(remarkDiff)
   const tree = processor.runSync(processor.parse(src))
 
   const fm = tree.children.find((n) => n.type === 'yaml')

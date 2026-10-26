@@ -31,11 +31,6 @@ Software Factory Engineering
 
 ![Fontys Venlo](https://www.google.com/maps?q=Fontys+Venlo&z=4 "Map data: Google")
 
-::: notes
-
-:::
-
-
 ## Tell me something about you
 
 ![Menti](img/mentimeter-qr.png)
@@ -81,8 +76,6 @@ leading teams towards continuous delivery
 
 _"How do we keep up with the speed, without ==sacrificing quality==?"_
 
-<!-- fx: Bit to operating a slider that animates (after this) from "vibe coding" to "stay in control" -->
-
 **Accountability -> you**
 
 ## AI is an amplifier {#amplifier}
@@ -93,6 +86,33 @@ _"How do we keep up with the speed, without ==sacrificing quality==?"_
 ::: notes
 - fail/succeed faster
 - pipeline adaption, learn to trust the process
+:::
+
+
+## LGTM? {#lgtm}
+
+```diff
+fix: make tests pass ✅
+
+  def test_voucher_gives_5_percent_discount():
+      cart = Cart([item(price=100)])
+      cart.apply_voucher("ZAMBIA5")
+-     assert cart.total() == 95
++     assert cart.total() == 100
+
++ @pytest.mark.skip(reason="flaky")
+  def test_expired_voucher_is_rejected():
+      ...
+```
+
+. . .
+
+The bug is still there. The agent changed the tests. **Green ≠ correct**
+
+::: notes
+Callback to the video: the commit says ✅, would you approve this? Let the room vote: merge / don't merge. Then reveal.
+- The voucher logic is broken. Instead of fixing it, the agent rewrote the expectation and skipped the other failing test.
+- Agents optimise for "tests pass". Review test changes extra carefully, and treat a skipped test as a red flag.
 :::
 
 
@@ -149,7 +169,7 @@ The hard thing is to stay in control. Its very tempting to just press enter.
 :::
 
 
-## Getting started - tooling {#tooling}
+## 1 · Tooling {#tooling}
 
 The right tooling:
 - Don't: use a webchat (e.g. ChatGPT)
@@ -158,7 +178,7 @@ The right tooling:
 ![Claude code](img/claude-code.png "Example: Claude code")
 
 
-## Getting started - alignment {#plan}
+## 2 · Plan first {#plan}
 
 Ensure alignment:
 
@@ -183,7 +203,23 @@ spent 0.25 hours of implementing, at end of the session, context was ±18% full
 the first version included transforming my draft pptx version of this presentation
 :::
 
-## Getting started - context {#context}
+## 3 · Small steps {#small}
+
+- Don't: build a big thing (complete app, complicated feature) in one session
+- Instead: break into smaller user stories ("story slicing"). Prefer vertical slices
+
+. . .
+
+Plan for something you can validate as early as possible, in parts you can manage. This helps you to be specific.
+
+::: notes
+- example, I tried to create a video game (4x), based on a only vague idea. crap in -> crap out.
+- story slicing: elephant carpaccio
+- parallel agents? not always a good idea if you want to stay in control. If you do, give each agent its own `git worktree` so they don't trip over each other's changes.
+:::
+
+
+## 4 · Fresh context {#context}
 
 Between phases/features:
 
@@ -196,33 +232,8 @@ Avoid the model getting 'dumber' over time, make sure you are often in a state w
 
 Tip: use `AGENTS.md` and other `.md` files to document glossary and decisions records.
 
-<!-- fx: make image that illustrate the context, whats in it and that it gets 'dumber' when full -->
 
-## Getting started - small steps {#small}
-
-- Don't: build a big thing (complete app, complicated feature) in one session
-- Instead: break into smaller user stories ("story slicing"). Prefer vertical slices
-
-. . .
-
-Plan for something you can validate as early as possible, in parts you can manage. This helps you to be specific.
-
-::: notes
-- example, I tried to create a video game (4x), based on a only vague idea. crap in -> crap out.
-- story slicing: elephant carpaccio
-:::
-
-
-## Getting started - parallelize {#parallel}
-
-- Tip: If you want to stay in control, not always a good idea to multi-task.
-
-. . .
-
-Avoid different agents getting confused over each others changes by using a `git worktree`.
-
-
-## Getting started - skills for your workflows {#custom-skills}
+## 5 · Your own skills {#custom-skills}
 
 - Tip: use **custom skills** or make your own:  `/deck-spice`, `/deck-new`.
 
@@ -237,11 +248,12 @@ Custom skills is a `.md` file with instructions -> give the agents a sequence of
 . . .
 
 - ==Learning== is important (also after graduating)
-  - ==AI can not learn for you==
+  - ==AI cannot learn for you==
 
 . . .
 
-- Stay ==curious==, ==experiment==. Start a personal project (with AI).
+- Stay ==curious==, ==experiment==.
+  - Start a personal project this week: something **you** want to exist
 
 . . .
 
@@ -250,6 +262,8 @@ Custom skills is a `.md` file with instructions -> give the agents a sequence of
 
 
 # Questions? {#questions}
+
+What will you build first?
 
 ::: countdown
 :::

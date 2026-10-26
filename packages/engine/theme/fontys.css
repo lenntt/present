@@ -225,6 +225,52 @@ body {
   color: var(--text);
 }
 
+.reveal pre {
+  margin: 0;
+}
+
+.reveal pre code {
+  display: block;
+  width: fit-content;
+  font-size: 0.75em;
+  line-height: 1.5;
+  padding: 0.8em 1.2em;
+  border-radius: 12px;
+  white-space: pre;
+}
+
+/* ```diff: a code-review look, one coloured row per line */
+.reveal pre.diff code {
+  padding: 0.6em 0;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.reveal pre.diff .line {
+  display: block;
+  padding: 0 1.2em;
+}
+
+.reveal pre.diff .add {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.reveal pre.diff .del {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+}
+
+.reveal pre.diff .hunk,
+.reveal pre.diff .meta {
+  color: var(--muted);
+}
+
+.reveal pre.diff .meta {
+  font-weight: 700;
+}
+
 .reveal a {
   color: var(--accent);
   text-decoration: underline;
@@ -466,6 +512,18 @@ figure.media iframe.map {
 
 .reveal .layout-section h1 {
   font-size: 140px;
+  color: var(--on-brand);
+}
+
+/* a section slide can carry one small image (e.g. a QR), pinned top right */
+.layout-section figure.media {
+  position: absolute;
+  top: 120px;
+  right: 120px;
+  width: 340px;
+}
+
+.reveal .layout-section p {
   color: var(--on-brand);
 }
 
