@@ -51,13 +51,13 @@ slides:
         params: { stagger: 2b }
 
   ai-impact:
-    intent: The question types itself out and "sacrificing quality" lights up; Bit rides a slider at "vibe coding" — the click slides it to "stay in control", the next one slams down "Accountability → you".
+    intent: The question types itself out and "sacrificing quality" lights up; Bit rides a slider at "LGTM" — the click slides it to "stay in control", the next one slams down "Accountability → you".
     effects:
       - target: .col-main > p:first-of-type
         custom: type-in
         params: { by: words, at: 0.5b, speed: 4 }
       - custom: control-slider        # author hint: Bit operating a slider from vibe coding to staying in control, after the question
-        params: { at: 5.5b, left: 120px, top: 470px, from: vibe coding, to: stay in control }
+        params: { at: 5.5b, left: 120px, top: 470px, from: LGTM, to: stay in control }
       - target: .col-main > p:last-of-type > strong
         custom: rubber-stamp          # last click, once Bit has made it to "stay in control"
     emphasisParams: { delay: 4b }   # "sacrificing quality" lights up once the question has typed out
@@ -87,11 +87,16 @@ slides:
           play: [think]
 
   vibe-coding:
-    intent: FAAFO lands as keycaps; "great for experiments" uncorks Bit, who happily codes away — then "professionally" slams down as the verdict.
+    intent: The definition types itself out like a warning label; after the pause FAAFO stamps down as one row of keycaps; "great for experiments" uncorks Bit, who happily codes away — then "professionally" slams down as the verdict.
     effects:
+      - target: .slide-body > p:first-of-type      # the definition
+        custom: type-in
+        params: { by: words, at: 0.5b, speed: 4 }
+      - target: .slide-body > ul                    # F·A·A·F·O in one row, so the slide fits
+        custom: acronym-row
       - target: ul strong
         preset: keycap-stamp
-      - target: .slide-body > p:nth-of-type(2)   # "Great for quick feedback, experiments…"
+      - target: .slide-body > p:nth-of-type(3)   # "Great for quick feedback, experiments…"
         preset: bit
         params:
           place: { right: 200px, bottom: 200px }

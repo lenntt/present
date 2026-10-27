@@ -1,0 +1,18 @@
+ul.acronym-row {
+  display: flex;
+  gap: 1.1em;
+  padding-left: 0;
+  margin-top: 0.4em;
+  list-style: none;
+}
+
+ul.acronym-row > li {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+ul.acronym-row > li::before,
+ul.acronym-row > li::marker {
+  content: none;
+}

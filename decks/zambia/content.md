@@ -64,31 +64,6 @@ leading teams towards continuous delivery
 :::
 
 
-## Software Engineers rely on AI (sept 2025)
-
-![Percentage of respondents who use AI at work](img/dora-2025-ai-use.png "Source: DORA, State of AI-assisted Software Development (Sept 2025) via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
-![Reliance on AI by task](img/dora-2025-reliance.png)
-
-
-## Faster, at making instable software (?) {#ai-impact}
-
-![Estimated effect of AI adoption on key outcomes](img/dora-2025-ai-impact.png "Source: DORA, State of AI-assisted Software Development (Sept 2025), via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
-
-_"How do we keep up with the speed, without ==sacrificing quality==?"_
-
-**Accountability -> you**
-
-## AI is an amplifier {#amplifier}
-
-![J-curve of AI value realization](img/dora-2026-j-curve.png "Source: DORA, ROI of AI-assisted Software Development (April 2026) https://services.google.com/fh/files/misc/dora-roi-of-ai-assisted-software-development-2026.pdf")
-![Learning curve, verification tax, pipeline adaptation](img/dora-2026-challenges.png "Source: DORA (April 2026)")
-
-::: notes
-- fail/succeed faster
-- pipeline adaption, learn to trust the process
-:::
-
-
 ## LGTM? {#lgtm}
 
 ```diff
@@ -116,9 +91,39 @@ Callback to the video: the commit says ✅, would you approve this? Let the room
 :::
 
 
-## Development with AI {#vibe-coding}
+## Software Engineers rely on AI (sept 2025)
 
-*The Good FAAFO* (Vibe Coding, Gene Kim & Steve Yegge, 2025):
+![Percentage of respondents who use AI at work](img/dora-2025-ai-use.png "Source: DORA, State of AI-assisted Software Development (Sept 2025) via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
+![Reliance on AI by task](img/dora-2025-reliance.png)
+
+
+## Faster, at making instable software (?) {#ai-impact}
+
+![Estimated effect of AI adoption on key outcomes](img/dora-2025-ai-impact.png "Source: DORA, State of AI-assisted Software Development (Sept 2025), via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
+
+_"How do we keep up with the speed, without ==sacrificing quality==?"_
+
+**Accountability -> you**
+
+
+## AI is an amplifier {#amplifier}
+
+![J-curve of AI value realization](img/dora-2026-j-curve.png "Source: DORA, ROI of AI-assisted Software Development (April 2026) https://services.google.com/fh/files/misc/dora-roi-of-ai-assisted-software-development-2026.pdf")
+![Learning curve, verification tax, pipeline adaptation](img/dora-2026-challenges.png "Source: DORA (April 2026)")
+
+::: notes
+- fail/succeed faster
+- pipeline adaption, learn to trust the process
+:::
+
+
+## Vibe coding {#vibe-coding}
+
+_"Accepting AI-generated code without thorough review."_
+
+. . .
+
+*The Good ==FAAFO==* (Vibe Coding, Gene Kim & Steve Yegge, 2025):
 
 - **F**aster
 - **A**mbitious
@@ -132,7 +137,7 @@ Great for quick feedback, experiments and personal projects.
 
 . . .
 
-Not (often) a great way to **professionally** deliver software to customers.
+Not (always) a great way to **responsibly** deliver software to customers.
 
 ::: notes
 Encourage students to try it out, its fun.
