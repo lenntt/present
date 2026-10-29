@@ -1,0 +1,29 @@
+/* The contact block moved from the top-right corner to the bottom-right of the slide: a few small lines + QR code. */
+.more.component.contact-strip {
+  top: auto;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.more.component.contact-strip p { margin: 0; white-space: pre-line; }
+.more.component.contact-strip p:empty { display: none; }
+.more.component.contact-strip strong { color: inherit; }
+.more.component.contact-strip figure {
+  position: static;
+  width: auto;
+  order: 2;
+  flex: none;
+  height: auto;
+  margin: 0;
+}
+.more.component.contact-strip img {
+  display: block;
+  width: 130px;
+  max-width: none;
+  height: auto;
+  border-radius: 8px;
+}

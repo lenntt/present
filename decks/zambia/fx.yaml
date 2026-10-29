@@ -210,7 +210,7 @@ slides:
           play: [retreat]
 
   questions:
-    intent: Q&A — the Menti QR asks what they'll build first; Bit pops back out of its flask to wave the room in, then ponders along while the session clock counts down.
+    intent: Q&A — the question asks what they'll build first; Bit pops back out of its flask to wave the room in, then ponders along while the session clock counts down; the contact details and LinkedIn QR settle quietly in the bottom-right corner.
     effects:
       - preset: bit
         params:
@@ -219,3 +219,6 @@ slides:
           enter: emerge
           at: 1b
           play: [wave, think]
+      - target: .component.more            # contact details + LinkedIn QR, small at the bottom-right
+        custom: contact-strip
+        params: { at: 2b }

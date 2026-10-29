@@ -277,3 +277,11 @@ What will you build first?
 
 ::: countdown
 :::
+
+::: more
+![LinkedIn: scan to connect](img/linkedin-qr.png)
+
+**Keep in touch**
+[linkedin.com/in/lennarttange](https://www.linkedin.com/in/lennarttange/)
+[l.tange@fontys.nl](mailto:l.tange@fontys.nl)
+:::
