@@ -1,0 +1,9 @@
+.reveal p.quote-card {
+  width: fit-content;
+  margin-bottom: 1.1em;
+  padding: 0.35em 0.9em;
+  border-left: 6px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--accent-soft);
+  font-size: 1.08em;
+}

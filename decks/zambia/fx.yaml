@@ -87,15 +87,21 @@ slides:
           play: [think]
 
   vibe-coding:
-    intent: The definition types itself out like a warning label; after the pause FAAFO stamps down as one row of keycaps; "great for experiments" uncorks Bit, who happily codes away — then "professionally" slams down as the verdict.
+    intent: Three clear blocks instead of a wall of text — the definition types itself onto a card like a warning label; after the pause FAAFO stamps down as one row of keycaps; then the verdict pair — a ✓ for experiments (Bit happily codes away), a ✗ as "responsibly" slams down.
     effects:
-      - target: .slide-body > p:first-of-type      # the definition
+      - target: .slide-body > p:first-of-type      # the definition, set apart as a card
+        custom: quote-card
+      - target: .slide-body > p:first-of-type
         custom: type-in
         params: { by: words, at: 0.5b, speed: 4 }
+      - target: .slide-body > p:nth-of-type(2)     # the book reference shrinks so "The Good FAAFO" reads as the title
+        custom: source-muted
       - target: .slide-body > ul                    # F·A·A·F·O in one row, so the slide fits
         custom: acronym-row
       - target: ul strong
         preset: keycap-stamp
+      - target: .slide-body > p:nth-of-type(n+3)   # Great for… ✓ / Not (always)… ✗
+        custom: verdict-marks
       - target: .slide-body > p:nth-of-type(3)   # "Great for quick feedback, experiments…"
         preset: bit
         params:

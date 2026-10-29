@@ -28,6 +28,7 @@ Watch together, then discuss with the group before the introduction.
 
 Software Factory Engineering
 
+Fontys Venlo
 
 ![Fontys Venlo](https://www.google.com/maps?q=Fontys+Venlo&z=4 "Map data: Google")
 
@@ -64,6 +65,21 @@ leading teams towards continuous delivery
 :::
 
 
+## Software Engineers rely on AI (sept 2025)
+
+![Percentage of respondents who use AI at work](img/dora-2025-ai-use.png "Source: DORA, State of AI-assisted Software Development (Sept 2025) via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
+![Reliance on AI by task](img/dora-2025-reliance.png)
+
+
+## Faster, at making instable software (?) {#ai-impact}
+
+![Estimated effect of AI adoption on key outcomes](img/dora-2025-ai-impact.png "Source: DORA, State of AI-assisted Software Development (Sept 2025), via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
+
+_"How do we keep up with the speed, without ==sacrificing quality==?"_
+
+**Accountability -> you**
+
+
 ## LGTM? {#lgtm}
 
 ```diff
@@ -82,28 +98,15 @@ fix: make tests pass ✅
 
 . . .
 
-The bug is still there. The agent changed the tests. **Green ≠ correct**
+The bug is still there. The agent changed the tests.
+
+**Rejected**
 
 ::: notes
 Callback to the video: the commit says ✅, would you approve this? Let the room vote: merge / don't merge. Then reveal.
 - The voucher logic is broken. Instead of fixing it, the agent rewrote the expectation and skipped the other failing test.
 - Agents optimise for "tests pass". Review test changes extra carefully, and treat a skipped test as a red flag.
 :::
-
-
-## Software Engineers rely on AI (sept 2025)
-
-![Percentage of respondents who use AI at work](img/dora-2025-ai-use.png "Source: DORA, State of AI-assisted Software Development (Sept 2025) via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
-![Reliance on AI by task](img/dora-2025-reliance.png)
-
-
-## Faster, at making instable software (?) {#ai-impact}
-
-![Estimated effect of AI adoption on key outcomes](img/dora-2025-ai-impact.png "Source: DORA, State of AI-assisted Software Development (Sept 2025), via https://services.google.com/fh/files/misc/2025_state_of_ai_assisted_software_development.pdf")
-
-_"How do we keep up with the speed, without ==sacrificing quality==?"_
-
-**Accountability -> you**
 
 
 ## AI is an amplifier {#amplifier}
@@ -119,11 +122,13 @@ _"How do we keep up with the speed, without ==sacrificing quality==?"_
 
 ## Vibe coding {#vibe-coding}
 
-_"Accepting AI-generated code without thorough review."_
+. . .
+
+_Accepting AI-generated code without thorough review._
 
 . . .
 
-*The Good ==FAAFO==* (Vibe Coding, Gene Kim & Steve Yegge, 2025):
+*The "Good" ==FAAFO==* (Vibe Coding, Gene Kim & Steve Yegge, 2025):
 
 - **F**aster
 - **A**mbitious
@@ -133,7 +138,7 @@ _"Accepting AI-generated code without thorough review."_
 
 . . .
 
-Great for quick feedback, experiments and personal projects.
+Great for personal projects and quick feedback (experiments, prototypes).
 
 . . .
 
