@@ -17,7 +17,7 @@ slides:
         custom: rise-in
         params: { at: 3b, stagger: 0.5b, y: 24 }
 
-  slide-1:
+  slide-2:
     intent: Hard cut into the music video — no transition between "us" and "it".
     transition: none
 

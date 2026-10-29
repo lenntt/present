@@ -12,16 +12,6 @@ tempo: 120
 ends: 17:00 Africa/Lusaka    # session end, local time in Lusaka — drives the countdown
 ---
 
----
-
-![LGTM (Looks Good to Me) — Claude Opus 5.5 music video](https://www.youtube.com/watch?v=3TNpOD6bov8){.full}
-
-::: notes
-"LGTM", was a meme long before, but AI popularized it even more by the amount of churn.
-Watch together, then discuss with the group before the introduction.
-:::
-
-
 ## Greetings from Venlo {#venlo}
 
 **Lennart Tange**
@@ -31,6 +21,15 @@ Software Factory Engineering
 Fontys Venlo
 
 ![Fontys Venlo](https://www.google.com/maps?q=Fontys+Venlo&z=4 "Map data: Google")
+
+---
+
+![LGTM (Looks Good to Me) — Claude Opus 5.5 music video](https://www.youtube.com/watch?v=3TNpOD6bov8){.full}
+
+::: notes
+"LGTM", was a meme long before, but AI popularized it even more by the amount of churn.
+Watch together, then discuss with the group before the introduction.
+:::
 
 ## Tell me something about you
 
